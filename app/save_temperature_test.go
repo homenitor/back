@@ -26,7 +26,7 @@ func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
 	assert.NoError(t, err)
 
 	err = service.SaveTemperature(room, date, value)
-	assert.Equal(t, err, ErrUnknown)
+	assert.Equal(t, ErrUnknown, err)
 }
 
 func TestSaveTemperatureOK(t *testing.T) {

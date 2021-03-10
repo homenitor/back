@@ -23,3 +23,7 @@ func NewTemperature(
 		value:      value,
 	}, nil
 }
+
+func (t *Temperature) Room() string {
+	return t.room
+}

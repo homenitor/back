@@ -30,3 +30,12 @@ func (s *Service) SaveTemperature(room string, date time.Time, value float64) er
 
 	return s.repository.SaveTemperature(t)
 }
+
+func (s *Service) GetLastTemperature(room string) (*entities.Temperature, error) {
+	t, err := s.repository.GetLastTemperature(room)
+	if err != nil {
+		return nil, err
+	}
+
+	return t, nil
+}

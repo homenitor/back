@@ -24,4 +24,11 @@ func main() {
 	}
 
 	fmt.Println("Temperature inserted in storage")
+
+	t, err := service.GetLastTemperature("test")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(t)
 }
