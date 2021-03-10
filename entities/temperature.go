@@ -1,0 +1,25 @@
+package entities
+
+import "time"
+
+type Temperature struct {
+	room       string
+	sampleDate time.Time
+	value      float64
+}
+
+func NewTemperature(
+	room string,
+	sampleDate time.Time,
+	value float64,
+) (*Temperature, error) {
+	if room == "" {
+		return nil, ErrEmptyRoom
+	}
+
+	return &Temperature{
+		room:       room,
+		sampleDate: sampleDate,
+		value:      value,
+	}, nil
+}
