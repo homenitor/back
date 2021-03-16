@@ -6,6 +6,7 @@ import (
 
 	"github.com/homenitor/back/adapters"
 	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/ports"
 )
 
 func main() {
@@ -31,4 +32,12 @@ func main() {
 	}
 
 	fmt.Println(t)
+
+	mqttServer, err := ports.NewMQTTServer("127.0.0.1", 1883, service)
+	if err != nil {
+		panic(err)
+	}
+
+	mqttServer.SubscribeToRoomTemperature("livingroom")
+	mqttServer.Start()
 }
