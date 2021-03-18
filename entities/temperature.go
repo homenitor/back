@@ -27,3 +27,7 @@ func NewTemperature(
 func (t *Temperature) Room() string {
 	return t.room
 }
+
+func (t *Temperature) Value() float64 {
+	return t.value
+}

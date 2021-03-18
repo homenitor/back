@@ -18,14 +18,21 @@ const (
 
 type MQTTServer struct {
 	client  mqtt.Client
+	logging app.LoggingLibrary
 	service *app.Service
 }
 
-func NewMQTTServer(host string, port int, service *app.Service) (*MQTTServer, error) {
+func NewMQTTServer(
+	host string,
+	port int,
+	service *app.Service,
+	logging app.LoggingLibrary,
+) (*MQTTServer, error) {
 	brokerUrl := getBrokerUrl(host, port)
 
 	mqttServer := &MQTTServer{
 		service: service,
+		logging: logging,
 	}
 
 	opts := mqtt.NewClientOptions()
@@ -55,11 +62,12 @@ func (s *MQTTServer) SubscribeToRoomTemperature(room string) {
 	token := s.client.Subscribe(topic, 1, s.TemperatureHandler)
 	token.Wait()
 
-	fmt.Printf("Subscribed to topic temperature of room %s\n", room)
+	// message := fmt.Sprintf("Subscribed to topic temperature of room %s\n", room)
 }
 
 func (s *MQTTServer) TemperatureHandler(client mqtt.Client, msg mqtt.Message) {
 	room := strings.Split(msg.Topic(), "/")[0]
+	s.logging.Debug("Received temperature sample for room \"%s\"", room)
 
 	temperaturePayload := string(msg.Payload())
 	temperatureValue, err := strconv.ParseFloat(string(temperaturePayload), 64)
@@ -72,11 +80,11 @@ func (s *MQTTServer) TemperatureHandler(client mqtt.Client, msg mqtt.Message) {
 }
 
 func (s *MQTTServer) connectionHandler(client mqtt.Client) {
-	fmt.Println("Connected to MQTT broker")
+	s.logging.Info("Connected to MQTT broker")
 }
 
 func (s *MQTTServer) connectionLostHandler(client mqtt.Client, err error) {
-	fmt.Printf("Connection lost: %v", err)
+	s.logging.Infof("Connection lost: %v", err)
 }
 
 func getBrokerUrl(host string, port int) string {

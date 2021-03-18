@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/homenitor/back/adapters"
@@ -10,30 +9,25 @@ import (
 )
 
 func main() {
-	fmt.Println("homenitor started")
-
 	repository := adapters.NewInMemoryRepository()
+	logging := adapters.NewLogging()
 
-	service, err := app.NewService(repository)
+	service, err := app.NewService(repository, logging)
 	if err != nil {
 		panic(err)
 	}
 
-	err = service.SaveTemperature("test", time.Now(), 1.6)
+	err = service.SaveTemperature("test", time.Now(), 11.492)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Temperature inserted in storage")
-
-	t, err := service.GetLastTemperature("test")
+	_, err = service.GetLastTemperature("test")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(t)
-
-	mqttServer, err := ports.NewMQTTServer("127.0.0.1", 1883, service)
+	mqttServer, err := ports.NewMQTTServer("127.0.0.1", 1883, service, logging)
 	if err != nil {
 		panic(err)
 	}

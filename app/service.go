@@ -8,17 +8,24 @@ import (
 
 type Service struct {
 	repository Repository
+	logging    LoggingLibrary
 }
 
 func NewService(
 	repository Repository,
+	logging LoggingLibrary,
 ) (*Service, error) {
 	if repository == nil {
 		return nil, ErrNilRepository
 	}
 
+	if logging == nil {
+		return nil, ErrNilLogging
+	}
+
 	return &Service{
 		repository: repository,
+		logging:    logging,
 	}, nil
 }
 
@@ -28,14 +35,17 @@ func (s *Service) SaveTemperature(room string, date time.Time, value float64) er
 		return err
 	}
 
+	s.logging.Debugf("Save temperature sample for room \"%s\"", room)
 	return s.repository.SaveTemperature(t)
 }
 
 func (s *Service) GetLastTemperature(room string) (*entities.Temperature, error) {
 	t, err := s.repository.GetLastTemperature(room)
 	if err != nil {
+		s.logging.Errorf("Error \"%s\" occured while getting last temperature sample", err.Error())
 		return nil, err
 	}
 
+	s.logging.Debugf("Fetched last temperature sample for room \"%s\"", room)
 	return t, nil
 }
