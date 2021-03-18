@@ -12,7 +12,9 @@ func TestGetLastTemperatureRepositoryError(t *testing.T) {
 	repositoryMock := &RepositoryMock{}
 	repositoryMock.On("GetLastTemperature", mock.Anything).Return(nil, ErrUnknown)
 
-	service, err := NewService(repositoryMock)
+	loggingMock := &LoggingLibraryMock{}
+
+	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
 
 	result, err := service.GetLastTemperature(room)
@@ -26,7 +28,9 @@ func TestGetLastTemperatureOK(t *testing.T) {
 	repositoryMock := &RepositoryMock{}
 	repositoryMock.On("GetLastTemperature", mock.Anything).Return(temperature, nil)
 
-	service, err := NewService(repositoryMock)
+	loggingMock := &LoggingLibraryMock{}
+
+	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
 
 	result, err := service.GetLastTemperature(room)

@@ -14,3 +14,8 @@ run-dependencies:
 	@docker-compose -p $(APP_NAME) -f containers/docker-compose.yml down || true;
 	@docker-compose -p $(APP_NAME) -f containers/docker-compose.yml pull;
 	@docker-compose -p $(APP_NAME) -f containers/docker-compose.yml up -d --build
+
+.PHONY: test
+test:
+	@echo "+ $@"
+	go test -v ./...
