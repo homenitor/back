@@ -51,11 +51,6 @@ func NewMQTTServer(
 	return mqttServer, nil
 }
 
-func (s *MQTTServer) Start() {
-	forever := make(chan bool)
-	<-forever
-}
-
 func (s *MQTTServer) SubscribeToRoomTemperature(room string) {
 	topic := fmt.Sprintf(temperatureTopicTemplate, room)
 
@@ -67,7 +62,7 @@ func (s *MQTTServer) SubscribeToRoomTemperature(room string) {
 
 func (s *MQTTServer) TemperatureHandler(client mqtt.Client, msg mqtt.Message) {
 	room := strings.Split(msg.Topic(), "/")[0]
-	s.logging.Debug("Received temperature sample for room \"%s\"", room)
+	s.logging.Debugf("Received temperature sample for room \"%s\"", room)
 
 	temperaturePayload := string(msg.Payload())
 	temperatureValue, err := strconv.ParseFloat(string(temperaturePayload), 64)
