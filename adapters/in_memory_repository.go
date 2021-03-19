@@ -24,9 +24,9 @@ func (r *InMemoryRepository) SaveTemperature(t *entities.Temperature) error {
 	defer r.lock.Unlock()
 
 	room := t.Room()
-	temperaturesInRoom, ok := r.temperatures[room]
+	_, ok := r.temperatures[room]
 	if ok {
-		temperaturesInRoom = append(temperaturesInRoom, t)
+		r.temperatures[room] = append(r.temperatures[room], t)
 	} else {
 		r.temperatures[room] = []*entities.Temperature{t}
 	}

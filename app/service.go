@@ -42,7 +42,7 @@ func (s *Service) SaveTemperature(room string, date time.Time, value float64) er
 func (s *Service) GetLastTemperature(room string) (*entities.Temperature, error) {
 	t, err := s.repository.GetLastTemperature(room)
 	if err != nil {
-		s.logging.Errorf("Error \"%s\" occured while getting last temperature sample", err.Error())
+		s.logging.Errorf("Error \"%s\" occured while getting last temperature sample for room \"%s\"", err.Error(), room)
 		return nil, err
 	}
 
