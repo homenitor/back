@@ -1,9 +1,11 @@
 package web
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/homenitor/back/adapters"
 )
 
 func (s *WebServer) GetLastTemperature(c *gin.Context) {
@@ -15,6 +17,11 @@ func (s *WebServer) GetLastTemperature(c *gin.Context) {
 
 	temperature, err := s.service.GetLastTemperature(room)
 	if err != nil {
+		if errors.Is(err, adapters.ErrRoomNotFound) {
+			c.AbortWithStatus(http.StatusNotFound)
+			return
+		}
+
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
