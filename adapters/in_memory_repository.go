@@ -9,11 +9,13 @@ import (
 type InMemoryRepository struct {
 	lock *sync.RWMutex
 
+	humidities   map[string][]*entities.Humidity
 	temperatures map[string][]*entities.Temperature
 }
 
 func NewInMemoryRepository() *InMemoryRepository {
 	return &InMemoryRepository{
+		humidities:   make(map[string][]*entities.Humidity, 0),
 		temperatures: make(map[string][]*entities.Temperature, 0),
 		lock:         &sync.RWMutex{},
 	}
@@ -45,4 +47,19 @@ func (r *InMemoryRepository) GetLastTemperature(room string) (*entities.Temperat
 
 	lastTemperatureIndex := len(temperaturesInRoom) - 1
 	return temperaturesInRoom[lastTemperatureIndex], nil
+}
+
+func (r *InMemoryRepository) SaveHumidity(h *entities.Humidity) error {
+	r.lock.Lock()
+	defer r.lock.Unlock()
+
+	room := h.Room()
+	_, ok := r.temperatures[room]
+	if ok {
+		r.humidities[room] = append(r.humidities[room], h)
+	} else {
+		r.humidities[room] = []*entities.Humidity{h}
+	}
+
+	return nil
 }

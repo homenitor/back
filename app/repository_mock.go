@@ -24,3 +24,8 @@ func (m *RepositoryMock) GetLastTemperature(room string) (*entities.Temperature,
 
 	return args.Get(0).(*entities.Temperature), nil
 }
+
+func (m *RepositoryMock) SaveHumidity(humidity *entities.Humidity) error {
+	args := m.Called(humidity)
+	return args.Error(0)
+}
