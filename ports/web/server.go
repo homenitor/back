@@ -7,6 +7,7 @@ import (
 
 var (
 	lastTemperaturePath = "/temperatures/:room"
+	lastHumidityPath    = "/humidity/:room"
 )
 
 type WebServer struct {
@@ -25,4 +26,5 @@ func NewWebServer(service *app.Service) *WebServer {
 
 func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
 	r.GET(lastTemperaturePath, s.GetLastTemperature)
+	r.GET(lastHumidityPath, s.GetLastHumidity)
 }
