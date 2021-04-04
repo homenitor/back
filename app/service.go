@@ -59,3 +59,14 @@ func (s *Service) SaveHumidity(room string, date time.Time, value float64) error
 	s.logging.Debugf("Save temperature sample for room \"%s\"", room)
 	return s.repository.SaveHumidity(h)
 }
+
+func (s *Service) GetLastHumidity(room string) (*entities.Humidity, error) {
+	t, err := s.repository.GetLastHumidity(room)
+	if err != nil {
+		s.logging.Errorf("Error \"%s\" occured while getting last humidity sample for room \"%s\"", err.Error(), room)
+		return nil, err
+	}
+
+	s.logging.Debugf("Fetched last humidity sample for room \"%s\"", room)
+	return t, nil
+}
