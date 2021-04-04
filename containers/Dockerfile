@@ -5,8 +5,7 @@ COPY . .
 
 ENV GO111MODULE=on
 
-RUN GOARM=6 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/back main.go
-
+RUN GOARM=6 GOARCH=arm CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/back main.go
 
 FROM arm32v6/alpine
 
