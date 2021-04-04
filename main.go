@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/homenitor/back/adapters"
 	"github.com/homenitor/back/app"
 	"github.com/homenitor/back/ports"
@@ -16,7 +18,12 @@ func main() {
 		panic(err)
 	}
 
-	mqttServer, err := ports.NewMQTTServer("127.0.0.1", 1883, service, logging)
+	mqttHost := os.Getenv("MQTT_HOST")
+	if mqttHost == "" {
+		mqttHost = "127.0.0.1"
+	}
+
+	mqttServer, err := ports.NewMQTTServer(mqttHost, 1883, service, logging)
 	if err != nil {
 		panic(err)
 	}
