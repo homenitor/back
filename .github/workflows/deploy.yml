@@ -50,6 +50,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          push: false
+          push: true
           tags: homenitor/back:latest
           file: ./containers/Dockerfile
