@@ -1,11 +1,11 @@
-name: Quality
+name: Deploy
 
 on:
   pull_request:
     branches: [master]
 
 jobs:
-  quality:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
