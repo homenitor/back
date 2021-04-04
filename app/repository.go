@@ -9,4 +9,5 @@ type Repository interface {
 	GetLastTemperature(room string) (*entities.Temperature, error)
 
 	SaveHumidity(humidity *entities.Humidity) error
+	GetLastHumidity(room string) (*entities.Humidity, error)
 }

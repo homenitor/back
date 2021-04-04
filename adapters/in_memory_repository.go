@@ -63,3 +63,16 @@ func (r *InMemoryRepository) SaveHumidity(h *entities.Humidity) error {
 
 	return nil
 }
+
+func (r *InMemoryRepository) GetLastHumidity(room string) (*entities.Humidity, error) {
+	r.lock.RLock()
+	defer r.lock.RUnlock()
+
+	humiditiesInRoom, ok := r.humidities[room]
+	if !ok {
+		return nil, ErrRoomNotFound
+	}
+
+	lastHumidityIndex := len(humiditiesInRoom) - 1
+	return humiditiesInRoom[lastHumidityIndex], nil
+}
