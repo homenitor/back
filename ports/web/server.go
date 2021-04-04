@@ -7,7 +7,7 @@ import (
 
 var (
 	lastTemperaturePath = "/temperatures/:room"
-	lastHumidityPath    = "/humidity/:room"
+	lastHumidityPath    = "/humidities/:room"
 )
 
 type WebServer struct {
