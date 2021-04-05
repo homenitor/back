@@ -1,26 +1,28 @@
-package app
+package samples
 
 import (
 	"time"
 
+	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
 )
 
 type Service struct {
-	repository Repository
-	logging    LoggingLibrary
+	repository libraries.Repository
+	logging    libraries.Logging
 }
 
 func NewService(
-	repository Repository,
-	logging LoggingLibrary,
+	repository libraries.Repository,
+	logging libraries.Logging,
 ) (*Service, error) {
 	if repository == nil {
-		return nil, ErrNilRepository
+		return nil, app.ErrNilRepository
 	}
 
 	if logging == nil {
-		return nil, ErrNilLogging
+		return nil, app.ErrNilLogging
 	}
 
 	return &Service{

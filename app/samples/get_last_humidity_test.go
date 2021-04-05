@@ -1,18 +1,20 @@
-package app
+package samples
 
 import (
 	"testing"
 
+	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestGetLastHumidityRepositoryError(t *testing.T) {
-	repositoryMock := &RepositoryMock{}
-	repositoryMock.On("GetLastHumidity", mock.Anything).Return(nil, ErrUnknown)
+	repositoryMock := &libraries.RepositoryMock{}
+	repositoryMock.On("GetLastHumidity", mock.Anything).Return(nil, app.ErrUnknown)
 
-	loggingMock := &LoggingLibraryMock{}
+	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
@@ -20,15 +22,15 @@ func TestGetLastHumidityRepositoryError(t *testing.T) {
 	result, err := service.GetLastHumidity(room)
 
 	assert.Nil(t, result)
-	assert.Equal(t, ErrUnknown, err)
+	assert.Equal(t, app.ErrUnknown, err)
 }
 
 func TestGetLastHumidityOK(t *testing.T) {
 	temperature := &entities.Humidity{}
-	repositoryMock := &RepositoryMock{}
+	repositoryMock := &libraries.RepositoryMock{}
 	repositoryMock.On("GetLastHumidity", mock.Anything).Return(temperature, nil)
 
-	loggingMock := &LoggingLibraryMock{}
+	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)

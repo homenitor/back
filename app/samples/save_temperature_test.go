@@ -1,28 +1,30 @@
-package app
+package samples
 
 import (
 	"testing"
 
+	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/libraries"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
-	repositoryMock := &RepositoryMock{}
-	repositoryMock.On("SaveTemperature", mock.Anything).Return(ErrUnknown)
-	loggingMock := &LoggingLibraryMock{}
+	repositoryMock := &libraries.RepositoryMock{}
+	repositoryMock.On("SaveTemperature", mock.Anything).Return(app.ErrUnknown)
+	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
 
 	err = service.SaveTemperature(room, date, value)
-	assert.Equal(t, ErrUnknown, err)
+	assert.Equal(t, app.ErrUnknown, err)
 }
 
 func TestSaveTemperatureOK(t *testing.T) {
-	repositoryMock := &RepositoryMock{}
+	repositoryMock := &libraries.RepositoryMock{}
 	repositoryMock.On("SaveTemperature", mock.Anything).Return(nil)
-	loggingMock := &LoggingLibraryMock{}
+	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)

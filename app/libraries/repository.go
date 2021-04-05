@@ -1,4 +1,4 @@
-package app
+package libraries
 
 import (
 	"github.com/homenitor/back/entities"

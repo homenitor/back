@@ -3,6 +3,7 @@ package adapters
 import (
 	"sync"
 
+	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
 )
 
@@ -13,7 +14,7 @@ type InMemoryRepository struct {
 	temperatures map[string][]*entities.Temperature
 }
 
-func NewInMemoryRepository() *InMemoryRepository {
+func NewInMemoryRepository() libraries.Repository {
 	return &InMemoryRepository{
 		humidities:   make(map[string][]*entities.Humidity, 0),
 		temperatures: make(map[string][]*entities.Temperature, 0),
