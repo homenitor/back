@@ -1,5 +1,5 @@
 package libraries
 
-type Probes interface {
+type ProbesLibrary interface {
 	SendDiscoveryMessage()
 }

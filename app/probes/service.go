@@ -3,31 +3,31 @@ package probes
 import (
 	"time"
 
-	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/common"
 	"github.com/homenitor/back/app/libraries"
 )
 
 type Service struct {
 	repository    libraries.Repository
 	logging       libraries.Logging
-	probesLibrary libraries.Probes
+	probesLibrary libraries.ProbesLibrary
 }
 
 func NewService(
 	repository libraries.Repository,
 	logging libraries.Logging,
-	probesLibrary libraries.Probes,
+	probesLibrary libraries.ProbesLibrary,
 ) (*Service, error) {
 	if repository == nil {
-		return nil, app.ErrNilRepository
+		return nil, common.ErrNilRepository
 	}
 
 	if logging == nil {
-		return nil, app.ErrNilLogging
+		return nil, common.ErrNilLogging
 	}
 
 	if probesLibrary == nil {
-		return nil, app.ErrNilProbes
+		return nil, common.ErrNilProbes
 	}
 
 	return &Service{

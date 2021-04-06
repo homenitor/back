@@ -3,7 +3,7 @@ package samples
 import (
 	"testing"
 
-	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/common"
 	"github.com/homenitor/back/app/libraries"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -11,14 +11,14 @@ import (
 
 func TestSaveHumidityRepositorySaveHumidityError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("SaveSample", mock.Anything).Return(app.ErrUnknown)
+	repositoryMock.On("SaveSample", mock.Anything).Return(common.ErrUnknown)
 	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
 
 	err = service.SaveHumidity(room, date, value)
-	assert.Equal(t, app.ErrUnknown, err)
+	assert.Equal(t, common.ErrUnknown, err)
 }
 
 func TestSaveHumidityOK(t *testing.T) {

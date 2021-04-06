@@ -3,7 +3,7 @@ package samples
 import (
 	"testing"
 
-	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/common"
 	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
 	"github.com/homenitor/back/values"
@@ -13,7 +13,7 @@ import (
 
 func TestGetLastHumidityRepositoryError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(nil, app.ErrUnknown)
+	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(nil, common.ErrUnknown)
 
 	loggingMock := &libraries.LoggingMock{}
 
@@ -23,7 +23,7 @@ func TestGetLastHumidityRepositoryError(t *testing.T) {
 	result, err := service.GetLastHumidity(room)
 
 	assert.Nil(t, result)
-	assert.Equal(t, app.ErrUnknown, err)
+	assert.Equal(t, common.ErrUnknown, err)
 }
 
 func TestGetLastHumidityOK(t *testing.T) {

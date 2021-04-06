@@ -3,7 +3,7 @@ package samples
 import (
 	"time"
 
-	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/common"
 	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
 	"github.com/homenitor/back/values"
@@ -19,11 +19,11 @@ func NewService(
 	logging libraries.Logging,
 ) (*Service, error) {
 	if repository == nil {
-		return nil, app.ErrNilRepository
+		return nil, common.ErrNilRepository
 	}
 
 	if logging == nil {
-		return nil, app.ErrNilLogging
+		return nil, common.ErrNilLogging
 	}
 
 	return &Service{

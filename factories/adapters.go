@@ -7,7 +7,7 @@ import (
 
 var (
 	logging            *adapters.Logging
-	probesLibrary      libraries.Probes
+	probesLibrary      libraries.ProbesLibrary
 	inMemoryRepository libraries.Repository
 )
 
@@ -19,7 +19,7 @@ func GetLoggingLibrary() libraries.Logging {
 	return logging
 }
 
-func GetProbesLibrary() libraries.Probes {
+func GetProbesLibrary() libraries.ProbesLibrary {
 	if probesLibrary == nil {
 		probesLibrary = adapters.NewMQTTProbes(GetMQTTClient(), GetLoggingLibrary())
 	}

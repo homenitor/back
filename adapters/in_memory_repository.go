@@ -11,57 +11,59 @@ import (
 type InMemoryRepository struct {
 	lock *sync.RWMutex
 
-	humidities   map[string][]*entities.Sample
-	temperatures map[string][]*entities.Sample
+	rooms map[string]*Room
+}
+
+type Room struct {
+	samples map[values.SampleCategory][]*entities.Sample
+}
+
+func NewRoom() *Room {
+	return &Room{
+		samples: make(map[values.SampleCategory][]*entities.Sample, 0),
+	}
 }
 
 func NewInMemoryRepository() libraries.Repository {
 	return &InMemoryRepository{
-		humidities:   make(map[string][]*entities.Sample, 0),
-		temperatures: make(map[string][]*entities.Sample, 0),
-		lock:         &sync.RWMutex{},
+		rooms: make(map[string]*Room, 0),
+		lock:  &sync.RWMutex{},
 	}
 }
 
 func (r *InMemoryRepository) SaveSample(sample *entities.Sample) error {
-	r.lock.Lock()
-	defer r.lock.Unlock()
+	roomID := sample.Room()
+	category := sample.Category()
 
-	room := sample.Room()
-
-	var samples []*entities.Sample
-	var ok bool
-	if sample.Category() == values.TEMPERATURE_SAMPLE_CATEGORY {
-		samples, ok = r.temperatures[room]
-	} else {
-		samples, ok = r.humidities[room]
-	}
-
+	room, ok := r.rooms[roomID]
 	if ok {
-		samples = append(samples, sample)
+		_, ok := room.samples[category]
+		if ok {
+			room.samples[category] = append(room.samples[category], sample)
+		} else {
+			room.samples[category] = []*entities.Sample{sample}
+		}
 	} else {
-		samples = []*entities.Sample{sample}
+		newRoom := NewRoom()
+		newRoom.samples[category] = []*entities.Sample{sample}
+
+		r.rooms[roomID] = newRoom
 	}
 
 	return nil
 }
 
-func (r *InMemoryRepository) GetLastSample(room string, category values.SampleCategory) (*entities.Sample, error) {
+func (r *InMemoryRepository) GetLastSample(roomID string, category values.SampleCategory) (*entities.Sample, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 
-	var samples []*entities.Sample
-	var ok bool
-	if category == values.TEMPERATURE_SAMPLE_CATEGORY {
-		samples = r.temperatures[room]
-	} else {
-		samples = r.humidities[room]
-	}
+	room, ok := r.rooms[roomID]
 
 	if !ok {
 		return nil, ErrRoomNotFound
 	}
 
-	lastTemperatureIndex := len(samples) - 1
-	return samples[lastTemperatureIndex], nil
+	lastSampleIndex := len(room.samples[category]) - 1
+
+	return room.samples[category][lastSampleIndex], nil
 }
