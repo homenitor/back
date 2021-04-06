@@ -1,4 +1,4 @@
-package app
+package common
 
 import "errors"
 
@@ -7,4 +7,5 @@ var (
 
 	ErrNilRepository = errors.New("repository is nil")
 	ErrNilLogging    = errors.New("logging is nil")
+	ErrNilProbes     = errors.New("probes library is nil")
 )

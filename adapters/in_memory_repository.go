@@ -3,76 +3,67 @@ package adapters
 import (
 	"sync"
 
+	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
+	"github.com/homenitor/back/values"
 )
 
 type InMemoryRepository struct {
 	lock *sync.RWMutex
 
-	humidities   map[string][]*entities.Humidity
-	temperatures map[string][]*entities.Temperature
+	rooms map[string]*Room
 }
 
-func NewInMemoryRepository() *InMemoryRepository {
+type Room struct {
+	samples map[values.SampleCategory][]*entities.Sample
+}
+
+func NewRoom() *Room {
+	return &Room{
+		samples: make(map[values.SampleCategory][]*entities.Sample, 0),
+	}
+}
+
+func NewInMemoryRepository() libraries.Repository {
 	return &InMemoryRepository{
-		humidities:   make(map[string][]*entities.Humidity, 0),
-		temperatures: make(map[string][]*entities.Temperature, 0),
-		lock:         &sync.RWMutex{},
+		rooms: make(map[string]*Room, 0),
+		lock:  &sync.RWMutex{},
 	}
 }
 
-func (r *InMemoryRepository) SaveTemperature(t *entities.Temperature) error {
-	r.lock.Lock()
-	defer r.lock.Unlock()
+func (r *InMemoryRepository) SaveSample(sample *entities.Sample) error {
+	roomID := sample.Room()
+	category := sample.Category()
 
-	room := t.Room()
-	_, ok := r.temperatures[room]
+	room, ok := r.rooms[roomID]
 	if ok {
-		r.temperatures[room] = append(r.temperatures[room], t)
+		_, ok := room.samples[category]
+		if ok {
+			room.samples[category] = append(room.samples[category], sample)
+		} else {
+			room.samples[category] = []*entities.Sample{sample}
+		}
 	} else {
-		r.temperatures[room] = []*entities.Temperature{t}
+		newRoom := NewRoom()
+		newRoom.samples[category] = []*entities.Sample{sample}
+
+		r.rooms[roomID] = newRoom
 	}
 
 	return nil
 }
 
-func (r *InMemoryRepository) GetLastTemperature(room string) (*entities.Temperature, error) {
+func (r *InMemoryRepository) GetLastSample(roomID string, category values.SampleCategory) (*entities.Sample, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 
-	temperaturesInRoom, ok := r.temperatures[room]
+	room, ok := r.rooms[roomID]
+
 	if !ok {
 		return nil, ErrRoomNotFound
 	}
 
-	lastTemperatureIndex := len(temperaturesInRoom) - 1
-	return temperaturesInRoom[lastTemperatureIndex], nil
-}
+	lastSampleIndex := len(room.samples[category]) - 1
 
-func (r *InMemoryRepository) SaveHumidity(h *entities.Humidity) error {
-	r.lock.Lock()
-	defer r.lock.Unlock()
-
-	room := h.Room()
-	_, ok := r.temperatures[room]
-	if ok {
-		r.humidities[room] = append(r.humidities[room], h)
-	} else {
-		r.humidities[room] = []*entities.Humidity{h}
-	}
-
-	return nil
-}
-
-func (r *InMemoryRepository) GetLastHumidity(room string) (*entities.Humidity, error) {
-	r.lock.RLock()
-	defer r.lock.RUnlock()
-
-	humiditiesInRoom, ok := r.humidities[room]
-	if !ok {
-		return nil, ErrRoomNotFound
-	}
-
-	lastHumidityIndex := len(humiditiesInRoom) - 1
-	return humiditiesInRoom[lastHumidityIndex], nil
+	return room.samples[category][lastSampleIndex], nil
 }

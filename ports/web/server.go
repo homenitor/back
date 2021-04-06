@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/homenitor/back/app"
+	"github.com/homenitor/back/app/samples"
 )
 
 var (
@@ -11,10 +11,10 @@ var (
 )
 
 type WebServer struct {
-	service *app.Service
+	service *samples.Service
 }
 
-func NewWebServer(service *app.Service) *WebServer {
+func NewWebServer(service *samples.Service) *WebServer {
 	if service == nil {
 		panic("service is nil")
 	}
