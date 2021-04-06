@@ -6,6 +6,7 @@ import (
 	"github.com/homenitor/back/app"
 	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
+	"github.com/homenitor/back/values"
 )
 
 type Service struct {
@@ -31,44 +32,24 @@ func NewService(
 	}, nil
 }
 
-func (s *Service) SaveTemperature(room string, date time.Time, value float64) error {
-	t, err := entities.NewTemperature(room, date, value)
+func (s *Service) saveSample(room string, category values.SampleCategory, date time.Time, value float64) error {
+	sample, err := entities.NewSample(room, category, date, value)
 	if err != nil {
 		return err
 	}
 
-	s.logging.Debugf("Save temperature sample for room \"%s\"", room)
-	return s.repository.SaveTemperature(t)
+	s.logging.Debugf("Save \"%s\" sample for room \"%s\"", category, room)
+
+	return s.repository.SaveSample(sample)
 }
 
-func (s *Service) GetLastTemperature(room string) (*entities.Temperature, error) {
-	t, err := s.repository.GetLastTemperature(room)
+func (s *Service) getLastSample(room string, category values.SampleCategory) (*entities.Sample, error) {
+	t, err := s.repository.GetLastSample(room, category)
 	if err != nil {
-		s.logging.Errorf("Error \"%s\" occured while getting last temperature sample for room \"%s\"", err.Error(), room)
+		s.logging.Errorf("Error \"%s\" occured while getting last \"%s\" sample for room \"%s\"", err.Error(), category, room)
 		return nil, err
 	}
 
-	s.logging.Debugf("Fetched last temperature sample for room \"%s\"", room)
-	return t, nil
-}
-
-func (s *Service) SaveHumidity(room string, date time.Time, value float64) error {
-	h, err := entities.NewHumidity(room, date, value)
-	if err != nil {
-		return err
-	}
-
-	s.logging.Debugf("Save temperature sample for room \"%s\"", room)
-	return s.repository.SaveHumidity(h)
-}
-
-func (s *Service) GetLastHumidity(room string) (*entities.Humidity, error) {
-	t, err := s.repository.GetLastHumidity(room)
-	if err != nil {
-		s.logging.Errorf("Error \"%s\" occured while getting last humidity sample for room \"%s\"", err.Error(), room)
-		return nil, err
-	}
-
-	s.logging.Debugf("Fetched last humidity sample for room \"%s\"", room)
+	s.logging.Debugf("Fetched last \"%s\" sample for room \"%s\"", category, room)
 	return t, nil
 }

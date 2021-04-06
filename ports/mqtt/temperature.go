@@ -28,6 +28,7 @@ func (s *Server) TemperatureHandler(client mqtt.Client, msg mqtt.Message) {
 		return
 	}
 
-	s.logging.Debugf("Received temperature sample \"%f\" for room \"%s\"", room)
+	s.logging.Debugf("Received temperature sample \"%f\" for room \"%s\"", temperatureValue, room)
+
 	s.service.SaveTemperature(room, time.Now(), temperatureValue)
 }

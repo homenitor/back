@@ -6,13 +6,14 @@ import (
 	"github.com/homenitor/back/app"
 	"github.com/homenitor/back/app/libraries"
 	"github.com/homenitor/back/entities"
+	"github.com/homenitor/back/values"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestGetLastHumidityRepositoryError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastHumidity", mock.Anything).Return(nil, app.ErrUnknown)
+	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(nil, app.ErrUnknown)
 
 	loggingMock := &libraries.LoggingMock{}
 
@@ -26,9 +27,9 @@ func TestGetLastHumidityRepositoryError(t *testing.T) {
 }
 
 func TestGetLastHumidityOK(t *testing.T) {
-	temperature := &entities.Humidity{}
+	temperature := &entities.Sample{}
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastHumidity", mock.Anything).Return(temperature, nil)
+	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(temperature, nil)
 
 	loggingMock := &libraries.LoggingMock{}
 

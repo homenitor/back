@@ -2,6 +2,7 @@ package libraries
 
 import (
 	"github.com/homenitor/back/entities"
+	"github.com/homenitor/back/values"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -9,34 +10,18 @@ type RepositoryMock struct {
 	mock.Mock
 }
 
-func (m *RepositoryMock) SaveTemperature(temperature *entities.Temperature) error {
-	args := m.Called(temperature)
+func (m *RepositoryMock) SaveSample(sample *entities.Sample) error {
+	args := m.Called(sample)
 	return args.Error(0)
 }
 
-func (m *RepositoryMock) GetLastTemperature(room string) (*entities.Temperature, error) {
-	args := m.Called(room)
+func (m *RepositoryMock) GetLastSample(room string, category values.SampleCategory) (*entities.Sample, error) {
+	args := m.Called(room, category)
 
 	err := args.Error(1)
 	if err != nil {
 		return nil, err
 	}
 
-	return args.Get(0).(*entities.Temperature), nil
-}
-
-func (m *RepositoryMock) SaveHumidity(humidity *entities.Humidity) error {
-	args := m.Called(humidity)
-	return args.Error(0)
-}
-
-func (m *RepositoryMock) GetLastHumidity(room string) (*entities.Humidity, error) {
-	args := m.Called(room)
-
-	err := args.Error(1)
-	if err != nil {
-		return nil, err
-	}
-
-	return args.Get(0).(*entities.Humidity), nil
+	return args.Get(0).(*entities.Sample), nil
 }

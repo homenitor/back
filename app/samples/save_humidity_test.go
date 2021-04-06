@@ -11,7 +11,7 @@ import (
 
 func TestSaveHumidityRepositorySaveHumidityError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("SaveHumidity", mock.Anything).Return(app.ErrUnknown)
+	repositoryMock.On("SaveSample", mock.Anything).Return(app.ErrUnknown)
 	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)
@@ -23,7 +23,7 @@ func TestSaveHumidityRepositorySaveHumidityError(t *testing.T) {
 
 func TestSaveHumidityOK(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("SaveHumidity", mock.Anything).Return(nil)
+	repositoryMock.On("SaveSample", mock.Anything).Return(nil)
 	loggingMock := &libraries.LoggingMock{}
 
 	service, err := NewService(repositoryMock, loggingMock)

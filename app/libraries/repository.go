@@ -2,12 +2,10 @@ package libraries
 
 import (
 	"github.com/homenitor/back/entities"
+	"github.com/homenitor/back/values"
 )
 
 type Repository interface {
-	SaveTemperature(temperature *entities.Temperature) error
-	GetLastTemperature(room string) (*entities.Temperature, error)
-
-	SaveHumidity(humidity *entities.Humidity) error
-	GetLastHumidity(room string) (*entities.Humidity, error)
+	SaveSample(sample *entities.Sample) error
+	GetLastSample(room string, category values.SampleCategory) (*entities.Sample, error)
 }
