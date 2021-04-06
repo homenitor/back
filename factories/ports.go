@@ -3,12 +3,12 @@ package factories
 import "github.com/homenitor/back/ports/mqtt"
 
 var (
-	mqttServer *mqtt.Server
+	mqttServer *mqtt.MQTTServer
 )
 
-func GetMQTTServer() *mqtt.Server {
+func GetMQTTServer() *mqtt.MQTTServer {
 	if mqttServer == nil {
-		newMqttServer, err := mqtt.NewServer(
+		newMqttServer, err := mqtt.NewMQTTServer(
 			GetMQTTClient(),
 			GetSamplesService(),
 			GetLoggingLibrary(),

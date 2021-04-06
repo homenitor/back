@@ -21,7 +21,13 @@ func GetLoggingLibrary() libraries.Logging {
 
 func GetProbesLibrary() libraries.ProbesLibrary {
 	if probesLibrary == nil {
-		probesLibrary = adapters.NewMQTTProbes(GetMQTTClient(), GetLoggingLibrary())
+		var err error
+
+		probesLibrary, err = adapters.NewMQTTProbes(GetMQTTClient(), GetLoggingLibrary())
+
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	return probesLibrary

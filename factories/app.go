@@ -12,7 +12,9 @@ var (
 
 func GetSamplesService() *samples.Service {
 	if samplesService == nil {
-		newSampleService, err := samples.NewService(
+		var err error
+
+		samplesService, err = samples.NewService(
 			GetInMemoryRepository(),
 			GetLoggingLibrary(),
 		)
@@ -20,8 +22,6 @@ func GetSamplesService() *samples.Service {
 		if err != nil {
 			panic(err)
 		}
-
-		samplesService = newSampleService
 	}
 
 	return samplesService
@@ -29,7 +29,9 @@ func GetSamplesService() *samples.Service {
 
 func GetProbesService() *probes.Service {
 	if probesService == nil {
-		newProbesService, err := probes.NewService(
+		var err error
+
+		probesService, err = probes.NewService(
 			GetInMemoryRepository(),
 			GetLoggingLibrary(),
 			GetProbesLibrary(),
@@ -38,8 +40,6 @@ func GetProbesService() *probes.Service {
 		if err != nil {
 			panic(err)
 		}
-
-		probesService = newProbesService
 	}
 
 	return probesService

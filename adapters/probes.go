@@ -2,6 +2,7 @@ package adapters
 
 import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/homenitor/back/app/common"
 	"github.com/homenitor/back/app/libraries"
 )
 
@@ -17,19 +18,19 @@ type MQTTProbes struct {
 func NewMQTTProbes(
 	mqttClient mqtt.Client,
 	logging libraries.Logging,
-) *MQTTProbes {
+) (*MQTTProbes, error) {
 	if mqttClient == nil {
-		panic("MQTTClient is nil")
+		return nil, ErrNilMqttClient
 	}
 
 	if logging == nil {
-		panic("Logging is nil")
+		return nil, common.ErrNilLogging
 	}
 
 	return &MQTTProbes{
 		mqttClient: mqttClient,
 		logging:    logging,
-	}
+	}, nil
 }
 
 func (p *MQTTProbes) SendDiscoveryMessage() {

@@ -9,19 +9,19 @@ import (
 	"github.com/homenitor/back/app/samples"
 )
 
-type Server struct {
+type MQTTServer struct {
 	client  mqtt.Client
 	logging libraries.Logging
 	service *samples.Service
 }
 
-func NewServer(
+func NewMQTTServer(
 	mqttClient mqtt.Client,
 	service *samples.Service,
 	logging libraries.Logging,
-) (*Server, error) {
+) (*MQTTServer, error) {
 
-	mqttServer := &Server{
+	mqttServer := &MQTTServer{
 		service: service,
 		logging: logging,
 	}
