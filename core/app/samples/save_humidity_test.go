@@ -3,13 +3,13 @@ package samples
 import (
 	"testing"
 
-	"github.com/homenitor/back/app/common"
-	"github.com/homenitor/back/app/libraries"
+	"github.com/homenitor/back/core/app/common"
+	"github.com/homenitor/back/core/app/libraries"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
-func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
+func TestSaveHumidityRepositorySaveHumidityError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	repositoryMock.On("SaveSample", mock.Anything).Return(common.ErrUnknown)
 	loggingMock := &libraries.LoggingMock{}
@@ -17,11 +17,11 @@ func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
 
-	err = service.SaveTemperature(room, date, value)
+	err = service.SaveHumidity(room, date, value)
 	assert.Equal(t, common.ErrUnknown, err)
 }
 
-func TestSaveTemperatureOK(t *testing.T) {
+func TestSaveHumidityOK(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	repositoryMock.On("SaveSample", mock.Anything).Return(nil)
 	loggingMock := &libraries.LoggingMock{}
@@ -29,6 +29,6 @@ func TestSaveTemperatureOK(t *testing.T) {
 	service, err := NewService(repositoryMock, loggingMock)
 	assert.NoError(t, err)
 
-	err = service.SaveTemperature(room, date, value)
+	err = service.SaveHumidity(room, date, value)
 	assert.NoError(t, err)
 }

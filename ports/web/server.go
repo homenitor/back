@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/homenitor/back/app/samples"
+	"github.com/homenitor/back/core/app/samples"
 )
 
 var (

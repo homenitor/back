@@ -1,8 +1,8 @@
 package libraries
 
 import (
-	"github.com/homenitor/back/entities"
-	"github.com/homenitor/back/values"
+	"github.com/homenitor/back/core/entities"
+	"github.com/homenitor/back/core/values"
 )
 
 type Repository interface {

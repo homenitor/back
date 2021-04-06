@@ -2,7 +2,7 @@ package factories
 
 import (
 	"github.com/homenitor/back/adapters"
-	"github.com/homenitor/back/app/libraries"
+	"github.com/homenitor/back/core/app/libraries"
 )
 
 var (

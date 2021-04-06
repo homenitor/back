@@ -3,8 +3,8 @@ package samples
 import (
 	"time"
 
-	"github.com/homenitor/back/entities"
-	"github.com/homenitor/back/values"
+	"github.com/homenitor/back/core/entities"
+	"github.com/homenitor/back/core/values"
 )
 
 func (s *Service) SaveHumidity(room string, date time.Time, value float64) error {

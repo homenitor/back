@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/homenitor/back/app/libraries"
-	"github.com/homenitor/back/app/samples"
+	"github.com/homenitor/back/core/app/libraries"
+	"github.com/homenitor/back/core/app/samples"
 )
 
 type MQTTServer struct {

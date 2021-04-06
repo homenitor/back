@@ -3,9 +3,9 @@ package adapters
 import (
 	"sync"
 
-	"github.com/homenitor/back/app/libraries"
-	"github.com/homenitor/back/entities"
-	"github.com/homenitor/back/values"
+	"github.com/homenitor/back/core/app/libraries"
+	"github.com/homenitor/back/core/entities"
+	"github.com/homenitor/back/core/values"
 )
 
 type InMemoryRepository struct {

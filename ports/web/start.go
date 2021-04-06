@@ -3,8 +3,8 @@ package web
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/homenitor/back/app/libraries"
-	"github.com/homenitor/back/app/samples"
+	"github.com/homenitor/back/core/app/libraries"
+	"github.com/homenitor/back/core/app/samples"
 )
 
 func Start(service *samples.Service, logging libraries.Logging) {

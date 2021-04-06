@@ -3,8 +3,8 @@ package probes
 import (
 	"testing"
 
-	"github.com/homenitor/back/app/common"
-	"github.com/homenitor/back/app/libraries"
+	"github.com/homenitor/back/core/app/common"
+	"github.com/homenitor/back/core/app/libraries"
 	"github.com/stretchr/testify/assert"
 )
 

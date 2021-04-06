@@ -2,8 +2,8 @@ package adapters
 
 import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/homenitor/back/app/common"
-	"github.com/homenitor/back/app/libraries"
+	"github.com/homenitor/back/core/app/common"
+	"github.com/homenitor/back/core/app/libraries"
 )
 
 const (

@@ -3,7 +3,7 @@ package entities
 import (
 	"time"
 
-	"github.com/homenitor/back/values"
+	"github.com/homenitor/back/core/values"
 )
 
 type Sample struct {

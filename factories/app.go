@@ -1,8 +1,8 @@
 package factories
 
 import (
-	"github.com/homenitor/back/app/probes"
-	"github.com/homenitor/back/app/samples"
+	"github.com/homenitor/back/core/app/probes"
+	"github.com/homenitor/back/core/app/samples"
 )
 
 var (
