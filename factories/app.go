@@ -1,6 +1,7 @@
 package factories
 
 import (
+	"github.com/homenitor/back/config"
 	"github.com/homenitor/back/core/app/probes"
 	"github.com/homenitor/back/core/app/samples"
 )
@@ -31,10 +32,13 @@ func GetProbesService() *probes.Service {
 	if probesService == nil {
 		var err error
 
+		discoveryPeriod := config.DiscoveryPeriod()
+
 		probesService, err = probes.NewService(
 			GetInMemoryRepository(),
 			GetLoggingLibrary(),
 			GetProbesLibrary(),
+			discoveryPeriod,
 		)
 
 		if err != nil {

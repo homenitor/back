@@ -11,12 +11,15 @@ type Service struct {
 	repository    libraries.Repository
 	logging       libraries.Logging
 	probesLibrary libraries.ProbesLibrary
+
+	discoveryPeriod time.Duration
 }
 
 func NewService(
 	repository libraries.Repository,
 	logging libraries.Logging,
 	probesLibrary libraries.ProbesLibrary,
+	discoveryPeriod time.Duration,
 ) (*Service, error) {
 	if repository == nil {
 		return nil, common.ErrNilRepository
@@ -31,9 +34,10 @@ func NewService(
 	}
 
 	return &Service{
-		repository:    repository,
-		logging:       logging,
-		probesLibrary: probesLibrary,
+		repository:      repository,
+		logging:         logging,
+		probesLibrary:   probesLibrary,
+		discoveryPeriod: discoveryPeriod,
 	}, nil
 }
 
@@ -41,7 +45,7 @@ func (s *Service) StartProbesDiscovery() {
 	go func() {
 		for {
 			s.sendDiscoveryMessage()
-			time.Sleep(10 * time.Second)
+			time.Sleep(s.discoveryPeriod)
 		}
 	}()
 }
