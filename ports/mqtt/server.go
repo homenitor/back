@@ -33,6 +33,13 @@ func NewMQTTServer(
 	return mqttServer
 }
 
+func (s *MQTTServer) subscribe(topic string, handler mqtt.MessageHandler) {
+	token := s.client.Subscribe(topic, byte(s.qualityOfService), s.HumidityHandler)
+	token.Wait()
+
+	s.logging.Debugf("Subscribed to \"%s\"", topic)
+}
+
 func getRoomFromMessage(msg mqtt.Message) string {
 	topic := msg.Topic()
 	return strings.Split(topic, "/")[0]
