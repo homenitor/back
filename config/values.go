@@ -5,21 +5,22 @@ import (
 )
 
 type values struct {
-	discoveryPeriod  time.Duration
-	logLevel         string
-	mqttHost         string
-	mqttPort         int
-	qualityOfService int
+	discoveryPeriod      time.Duration
+	logLevel             string
+	mqttHost             string
+	mqttPort             int
+	mqttQualityOfService int
 }
 
 var instance *values
 
 func init() {
 	instance = &values{
-		discoveryPeriod: getTimeDuration("DISCOVERY_PERIOD", "10s"),
-		mqttHost:        getString("MQTT_HOST", "127.0.0.1"),
-		mqttPort:        getInt("MQTT_PORT", 1883),
-		logLevel:        getString("LOG_LEVEL", "debug"),
+		discoveryPeriod:      getTimeDuration("DISCOVERY_PERIOD", "10s"),
+		logLevel:             getString("LOG_LEVEL", "debug"),
+		mqttHost:             getString("MQTT_HOST", "127.0.0.1"),
+		mqttPort:             getInt("MQTT_PORT", 1883),
+		mqttQualityOfService: getInt("MQTT_QUALITY_OF_SERVICE", 2),
 	}
 }
 
@@ -40,5 +41,5 @@ func MQTTPort() int {
 }
 
 func MQTTQualityOfService() int {
-	return instance.qualityOfService
+	return instance.mqttQualityOfService
 }
