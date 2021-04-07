@@ -10,25 +10,27 @@ import (
 )
 
 type MQTTServer struct {
-	client  mqtt.Client
-	logging libraries.Logging
-	service *samples.Service
+	client           mqtt.Client
+	logging          libraries.Logging
+	service          *samples.Service
+	qualityOfService int
 }
 
 func NewMQTTServer(
 	mqttClient mqtt.Client,
 	service *samples.Service,
 	logging libraries.Logging,
-) (*MQTTServer, error) {
-
+	qualityOfService int,
+) *MQTTServer {
 	mqttServer := &MQTTServer{
-		service: service,
-		logging: logging,
+		service:          service,
+		logging:          logging,
+		qualityOfService: qualityOfService,
 	}
 
 	mqttServer.client = mqttClient
 
-	return mqttServer, nil
+	return mqttServer
 }
 
 func getRoomFromMessage(msg mqtt.Message) string {

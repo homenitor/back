@@ -2,6 +2,7 @@ package factories
 
 import (
 	"github.com/homenitor/back/adapters"
+	"github.com/homenitor/back/config"
 	"github.com/homenitor/back/core/app/libraries"
 )
 
@@ -23,7 +24,13 @@ func GetProbesLibrary() libraries.ProbesLibrary {
 	if probesLibrary == nil {
 		var err error
 
-		probesLibrary, err = adapters.NewMQTTProbes(GetMQTTClient(), GetLoggingLibrary())
+		qualityOfService := config.MQTTQualityOfService()
+
+		probesLibrary, err = adapters.NewMQTTProbes(
+			GetMQTTClient(),
+			GetLoggingLibrary(),
+			qualityOfService,
+		)
 
 		if err != nil {
 			panic(err)

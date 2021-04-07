@@ -1,6 +1,9 @@
 package factories
 
-import "github.com/homenitor/back/ports/mqtt"
+import (
+	"github.com/homenitor/back/config"
+	"github.com/homenitor/back/ports/mqtt"
+)
 
 var (
 	mqttServer *mqtt.MQTTServer
@@ -8,17 +11,13 @@ var (
 
 func GetMQTTServer() *mqtt.MQTTServer {
 	if mqttServer == nil {
-		newMqttServer, err := mqtt.NewMQTTServer(
+		qualityOfService := config.MQTTQualityOfService()
+		mqttServer = mqtt.NewMQTTServer(
 			GetMQTTClient(),
 			GetSamplesService(),
 			GetLoggingLibrary(),
+			qualityOfService,
 		)
-
-		if err != nil {
-			panic(err)
-		}
-
-		mqttServer = newMqttServer
 	}
 
 	return mqttServer

@@ -1,4 +1,4 @@
-package external
+package clients
 
 import (
 	"fmt"
@@ -16,10 +16,11 @@ func NewMQTTClient(
 	port int,
 	logging libraries.Logging,
 ) mqtt.Client {
-	brokerUrl := getBrokerUrl(host, port)
-
 	opts := mqtt.NewClientOptions()
+
+	brokerUrl := getBrokerUrl(host, port)
 	opts.AddBroker(brokerUrl)
+
 	opts.SetClientID(clientID)
 	opts.OnConnect = connectionHandler(logging)
 	opts.OnConnectionLost = connectionLostHandler(logging)
@@ -40,7 +41,7 @@ func connectionHandler(logging libraries.Logging) mqtt.OnConnectHandler {
 
 func connectionLostHandler(logging libraries.Logging) mqtt.ConnectionLostHandler {
 	return func(client mqtt.Client, err error) {
-		logging.Infof("Connection lost: %v", err)
+		logging.Errorf("Connection lost: %v", err)
 	}
 }
 

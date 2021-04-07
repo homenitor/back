@@ -2,7 +2,9 @@ package adapters
 
 import (
 	"os"
+	"strings"
 
+	"github.com/homenitor/back/config"
 	"github.com/op/go-logging"
 )
 
@@ -15,12 +17,14 @@ type Logging struct {
 }
 
 func NewLogging() *Logging {
+	configLogLevel := config.LogLevel()
+	logLevel := getLogLevel(configLogLevel)
 	loggingBackend := logging.NewLogBackend(os.Stderr, "", 0)
 
 	formatterBackend := logging.NewBackendFormatter(loggingBackend, format)
 
 	leveledBackend := logging.AddModuleLevel(formatterBackend)
-	leveledBackend.SetLevel(logging.DEBUG, "")
+	leveledBackend.SetLevel(logLevel, "")
 
 	logging.SetBackend(leveledBackend)
 
@@ -29,6 +33,21 @@ func NewLogging() *Logging {
 	return &Logging{
 		log: logger,
 	}
+}
+
+func getLogLevel(configLogLevel string) logging.Level {
+	lowercasedConfigLogLevel := strings.ToLower(configLogLevel)
+	levels := make(map[string]logging.Level, 0)
+	levels["debug"] = logging.DEBUG
+	levels["info"] = logging.INFO
+	levels["error"] = logging.ERROR
+
+	level, ok := levels[lowercasedConfigLogLevel]
+	if !ok {
+		panic(ErrUnknownLogLevel)
+	}
+
+	return level
 }
 
 func (l *Logging) Info(args ...interface{}) {

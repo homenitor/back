@@ -14,7 +14,7 @@ const (
 func (s *MQTTServer) SubscribeToRoomHumidity(room string) {
 	topic := fmt.Sprintf(humidityTopicTemplate, room)
 
-	token := s.client.Subscribe(topic, 1, s.HumidityHandler)
+	token := s.client.Subscribe(topic, byte(s.qualityOfService), s.HumidityHandler)
 	token.Wait()
 
 	s.logging.Debugf("Subscribed to \"%s\" humidity", room)

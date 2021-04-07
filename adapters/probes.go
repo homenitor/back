@@ -11,13 +11,15 @@ const (
 )
 
 type MQTTProbes struct {
-	mqttClient mqtt.Client
-	logging    libraries.Logging
+	mqttClient       mqtt.Client
+	logging          libraries.Logging
+	qualityOfService int
 }
 
 func NewMQTTProbes(
 	mqttClient mqtt.Client,
 	logging libraries.Logging,
+	qualityOfService int,
 ) (*MQTTProbes, error) {
 	if mqttClient == nil {
 		return nil, ErrNilMqttClient
@@ -28,14 +30,15 @@ func NewMQTTProbes(
 	}
 
 	return &MQTTProbes{
-		mqttClient: mqttClient,
-		logging:    logging,
+		mqttClient:       mqttClient,
+		logging:          logging,
+		qualityOfService: qualityOfService,
 	}, nil
 }
 
 func (p *MQTTProbes) SendDiscoveryMessage() {
 	p.logging.Debug("Send discovery message")
 
-	token := p.mqttClient.Publish(discoveryTopic, 0, true, "")
+	token := p.mqttClient.Publish(discoveryTopic, byte(p.qualityOfService), true, "")
 	token.Wait()
 }
