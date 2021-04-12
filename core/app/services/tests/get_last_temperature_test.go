@@ -1,10 +1,12 @@
-package samples
+package services
 
 import (
 	"testing"
+	"time"
 
 	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
+	"github.com/homenitor/back/core/app/services"
 	"github.com/homenitor/back/core/entities"
 	"github.com/homenitor/back/core/values"
 	"github.com/stretchr/testify/assert"
@@ -17,10 +19,12 @@ func TestGetLastTemperatureRepositoryError(t *testing.T) {
 
 	loggingMock := &libraries.LoggingMock{}
 
-	service, err := NewService(repositoryMock, loggingMock)
+	probeLibraryMock := &libraries.ProbesLibraryMock{}
+
+	service, err := services.NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
 	assert.NoError(t, err)
 
-	result, err := service.GetLastTemperature(room)
+	result, err := service.GetLastTemperature(probeID)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrUnknown, err)
@@ -33,10 +37,12 @@ func TestGetLastTemperatureOK(t *testing.T) {
 
 	loggingMock := &libraries.LoggingMock{}
 
-	service, err := NewService(repositoryMock, loggingMock)
+	probeLibraryMock := &libraries.ProbesLibraryMock{}
+
+	service, err := services.NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
 	assert.NoError(t, err)
 
-	result, err := service.GetLastTemperature(room)
+	result, err := service.GetLastTemperature(probeID)
 
 	assert.Equal(t, temperature, result)
 	assert.Nil(t, err)

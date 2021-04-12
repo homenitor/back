@@ -1,4 +1,4 @@
-package probes
+package services
 
 import (
 	"testing"
@@ -6,45 +6,42 @@ import (
 
 	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
+	"github.com/homenitor/back/core/app/services"
 	"github.com/stretchr/testify/assert"
 )
 
-var duration = time.Duration(200)
-
-func TestNewProbesServiceNilRepository(t *testing.T) {
-	duration := time.Duration(200)
-
-	result, err := NewService(nil, nil, nil, duration)
+func TestNewSamplesServiceNilRepository(t *testing.T) {
+	result, err := services.NewService(nil, nil, nil, time.Second)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrNilRepository, err)
 }
 
-func TestNewProbesServiceNilLogging(t *testing.T) {
+func TestNewSamplesServiceNilLogging(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 
-	result, err := NewService(repositoryMock, nil, nil, duration)
+	result, err := services.NewService(repositoryMock, nil, nil, time.Second)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrNilLogging, err)
 }
 
-func TestNewProbesServiceNilProbesLibrary(t *testing.T) {
+func TestNewSamplesServiceNilProbesLibrary(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	loggingMock := &libraries.LoggingMock{}
 
-	result, err := NewService(repositoryMock, loggingMock, nil, duration)
+	result, err := services.NewService(repositoryMock, loggingMock, nil, time.Second)
 
 	assert.Nil(t, result)
-	assert.Equal(t, common.ErrNilProbes, err)
+	assert.Equal(t, common.ErrNilProbeLibrary, err)
 }
 
-func TestNewProbesServiceOK(t *testing.T) {
+func TestNewSamplesServiceOK(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	loggingMock := &libraries.LoggingMock{}
 	probesLibraryMock := &libraries.ProbesLibraryMock{}
 
-	result, err := NewService(repositoryMock, loggingMock, probesLibraryMock, duration)
+	result, err := services.NewService(repositoryMock, loggingMock, probesLibraryMock, time.Second)
 
 	assert.NotNil(t, result)
 	assert.Nil(t, err)

@@ -1,4 +1,4 @@
-package probes
+package services
 
 import (
 	"time"
@@ -30,7 +30,7 @@ func NewService(
 	}
 
 	if probesLibrary == nil {
-		return nil, common.ErrNilProbes
+		return nil, common.ErrNilProbeLibrary
 	}
 
 	return &Service{
@@ -39,17 +39,4 @@ func NewService(
 		probesLibrary:   probesLibrary,
 		discoveryPeriod: discoveryPeriod,
 	}, nil
-}
-
-func (s *Service) StartProbesDiscovery() {
-	go func() {
-		for {
-			s.sendDiscoveryMessage()
-			time.Sleep(s.discoveryPeriod)
-		}
-	}()
-}
-
-func (s *Service) sendDiscoveryMessage() {
-	s.probesLibrary.SendDiscoveryMessage()
 }

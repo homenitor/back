@@ -4,6 +4,7 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
+	mqttPorts "github.com/homenitor/back/ports/mqtt"
 )
 
 const (
@@ -12,6 +13,7 @@ const (
 
 type MQTTProbes struct {
 	mqttClient       mqtt.Client
+	mqttServer       *mqttPorts.MQTTServer
 	logging          libraries.Logging
 	qualityOfService int
 }

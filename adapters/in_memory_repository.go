@@ -3,6 +3,7 @@ package adapters
 import (
 	"sync"
 
+	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
 	"github.com/homenitor/back/core/entities"
 	"github.com/homenitor/back/core/values"
@@ -11,59 +12,83 @@ import (
 type InMemoryRepository struct {
 	lock *sync.RWMutex
 
-	rooms map[string]*Room
-}
-
-type Room struct {
-	samples map[values.SampleCategory][]*entities.Sample
-}
-
-func NewRoom() *Room {
-	return &Room{
-		samples: make(map[values.SampleCategory][]*entities.Sample, 0),
-	}
+	probes map[int]*entities.Probe
 }
 
 func NewInMemoryRepository() libraries.Repository {
 	return &InMemoryRepository{
-		rooms: make(map[string]*Room, 0),
-		lock:  &sync.RWMutex{},
+		probes: make(map[int]*entities.Probe, 0),
+		lock:   &sync.RWMutex{},
 	}
 }
 
-func (r *InMemoryRepository) SaveSample(sample *entities.Sample) error {
-	roomID := sample.Room()
-	category := sample.Category()
+func (r *InMemoryRepository) GetProbe(id int) (*entities.Probe, error) {
+	probe, ok := r.probes[id]
+	if !ok {
+		return nil, common.ErrProbeNotFound
+	}
 
-	room, ok := r.rooms[roomID]
-	if ok {
-		_, ok := room.samples[category]
-		if ok {
-			room.samples[category] = append(room.samples[category], sample)
-		} else {
-			room.samples[category] = []*entities.Sample{sample}
-		}
+	return probe, nil
+}
+
+func (r *InMemoryRepository) SaveProbe(probe *entities.Probe) error {
+	r.lock.Lock()
+	defer r.lock.Unlock()
+
+	r.probes[probe.ID()] = probe
+
+	return nil
+}
+
+func (r *InMemoryRepository) SaveSample(probeID int, sample *entities.Sample) error {
+	probe, isProbeFound := r.probes[probeID]
+	if !isProbeFound {
+		return common.ErrProbeNotFound
+	}
+
+	if sample.Category() == values.HUMIDITY_SAMPLE_CATEGORY {
+		probe.RecordHumidity(sample)
 	} else {
-		newRoom := NewRoom()
-		newRoom.samples[category] = []*entities.Sample{sample}
-
-		r.rooms[roomID] = newRoom
+		probe.RecordTemperature(sample)
 	}
 
 	return nil
 }
 
-func (r *InMemoryRepository) GetLastSample(roomID string, category values.SampleCategory) (*entities.Sample, error) {
+func (r *InMemoryRepository) GetLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 
-	room, ok := r.rooms[roomID]
+	probe, ok := r.probes[probeID]
 
 	if !ok {
-		return nil, ErrRoomNotFound
+		return nil, ErrProbeNotFound
 	}
 
-	lastSampleIndex := len(room.samples[category]) - 1
+	switch category {
+	case values.HUMIDITY_SAMPLE_CATEGORY:
+		return r.getLatestHumidity(probe)
+	case values.TEMPERATURE_SAMPLE_CATEGORY:
+		return r.getLatestTemperature(probe)
+	}
 
-	return room.samples[category][lastSampleIndex], nil
+	return nil, ErrUnknownSampleCategory
+}
+
+func (r *InMemoryRepository) getLatestTemperature(probe *entities.Probe) (*entities.Sample, error) {
+	lastSample, err := probe.LatestTemperature()
+	if err != nil {
+		return nil, err
+	}
+
+	return lastSample, nil
+}
+
+func (r *InMemoryRepository) getLatestHumidity(probe *entities.Probe) (*entities.Sample, error) {
+	lastSample, err := probe.LatestHumidity()
+	if err != nil {
+		return nil, err
+	}
+
+	return lastSample, nil
 }

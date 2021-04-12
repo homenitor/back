@@ -8,23 +8,28 @@ import (
 )
 
 const (
-	humidityTopicTemplate = "%s/humidity"
+	humidityTopicTemplate = "%d/humidity"
 )
 
-func (s *MQTTServer) SubscribeToRoomHumidity(room string) {
-	topic := fmt.Sprintf(humidityTopicTemplate, room)
+func (s *MQTTServer) SubscribeToProbeHumidity(probeID int) {
+	topic := fmt.Sprintf(humidityTopicTemplate, probeID)
 
 	s.subscribe(topic, s.HumidityHandler)
 }
 
 func (s *MQTTServer) HumidityHandler(client mqtt.Client, msg mqtt.Message) {
-	room := getRoomFromMessage(msg)
-
-	humidityValue, err := parseFloatPayload(msg)
+	probeID, err := getProbeIDFromMessage(msg)
 	if err != nil {
+		s.logging.Error(err)
 		return
 	}
 
-	s.logging.Debugf("Received humidity sample \"%f\" for room \"%s\"", humidityValue, room)
-	s.service.SaveHumidity(room, time.Now(), humidityValue)
+	humidityValue, err := parseFloatPayload(msg)
+	if err != nil {
+		s.logging.Error(err)
+		return
+	}
+
+	s.logging.Debugf("Received humidity sample \"%f\" for probe \"%d\"", humidityValue, probeID)
+	s.service.SaveHumidity(probeID, time.Now(), humidityValue)
 }
