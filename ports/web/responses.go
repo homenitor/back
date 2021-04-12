@@ -7,3 +7,8 @@ type GetLastTemperatureResponse struct {
 type GetLastHumidityResponse struct {
 	Value float64 `json:"value"`
 }
+
+type GetProbesResponse struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}

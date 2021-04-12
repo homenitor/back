@@ -10,6 +10,16 @@ type RepositoryMock struct {
 	mock.Mock
 }
 
+func (m *RepositoryMock) ListProbes() ([]*ListProbesRepositoryReturn, error) {
+	args := m.Called()
+	err := args.Error(1)
+	if err != nil {
+		return nil, err
+	}
+
+	return args.Get(0).([]*ListProbesRepositoryReturn), nil
+}
+
 func (m *RepositoryMock) GetProbe(probeID int) (*entities.Probe, error) {
 	args := m.Called(probeID)
 	err := args.Error(1)

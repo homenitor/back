@@ -12,6 +12,7 @@ import (
 var (
 	lastTemperaturePath = "/probes/:probeID/temperatures/latest"
 	lastHumidityPath    = "/probes/:probeID/humidities/latest"
+	listProbesPath      = "/probes"
 )
 
 type WebServer struct {
@@ -31,6 +32,7 @@ func NewWebServer(service *services.Service) *WebServer {
 func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
 	r.GET(lastTemperaturePath, s.GetLastTemperature)
 	r.GET(lastHumidityPath, s.GetLastHumidity)
+	r.GET(listProbesPath, s.ListProbes)
 }
 
 func (s *WebServer) handleError(c *gin.Context, err error) bool {
