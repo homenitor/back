@@ -20,7 +20,7 @@ func GetLoggingLibrary() libraries.Logging {
 	return logging
 }
 
-func GetProbesLibrary() libraries.ProbesLibrary {
+func GetMQTTProbesLibrary() libraries.ProbesLibrary {
 	if probesLibrary == nil {
 		var err error
 
@@ -28,6 +28,7 @@ func GetProbesLibrary() libraries.ProbesLibrary {
 
 		probesLibrary, err = adapters.NewMQTTProbes(
 			GetMQTTClient(),
+			GetMQTTServer(),
 			GetLoggingLibrary(),
 			qualityOfService,
 		)

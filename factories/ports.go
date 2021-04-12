@@ -14,7 +14,7 @@ func GetMQTTServer() *mqtt.MQTTServer {
 		qualityOfService := config.MQTTQualityOfService()
 		mqttServer = mqtt.NewMQTTServer(
 			GetMQTTClient(),
-			GetSamplesService(),
+			GetService(),
 			GetLoggingLibrary(),
 			qualityOfService,
 		)

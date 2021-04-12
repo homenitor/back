@@ -2,18 +2,25 @@ package web
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (s *WebServer) GetLastTemperature(c *gin.Context) {
-	room := c.Param("room")
-	if room == "" {
+	probeIDString := c.Param("probeID")
+	if probeIDString == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	temperature, err := s.service.GetLastTemperature(room)
+	probeID, err := strconv.Atoi(probeIDString)
+	if err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	temperature, err := s.service.GetLastTemperature(probeID)
 	hasError := s.handleError(c, err)
 	if hasError {
 		return
@@ -27,13 +34,18 @@ func (s *WebServer) GetLastTemperature(c *gin.Context) {
 }
 
 func (s *WebServer) GetLastHumidity(c *gin.Context) {
-	room := c.Param("room")
-	if room == "" {
+	probeIDString := c.Param("probeID")
+	if probeIDString == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	humidity, err := s.service.GetLastHumidity(room)
+	probeID, err := strconv.Atoi(probeIDString)
+	if err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+	humidity, err := s.service.GetLastHumidity(probeID)
 	hasError := s.handleError(c, err)
 	if hasError {
 		return

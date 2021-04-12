@@ -7,3 +7,7 @@ type ProbesLibraryMock struct {
 }
 
 func (m *ProbesLibraryMock) SendDiscoveryMessage() {}
+
+func (m *ProbesLibraryMock) SubscribeToProbeHumidity(probeID int) {}
+
+func (m *ProbesLibraryMock) SubscribeToProbeTemperature(probeID int) {}

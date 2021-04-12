@@ -6,19 +6,19 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/homenitor/back/adapters"
-	"github.com/homenitor/back/core/app/samples"
+	"github.com/homenitor/back/core/app/services"
 )
 
 var (
-	lastTemperaturePath = "/temperatures/:room"
-	lastHumidityPath    = "/humidities/:room"
+	lastTemperaturePath = "/probes/:probeID/temperatures/latest"
+	lastHumidityPath    = "/probes/:probeID/humidities/latest"
 )
 
 type WebServer struct {
-	service *samples.Service
+	service *services.Service
 }
 
-func NewWebServer(service *samples.Service) *WebServer {
+func NewWebServer(service *services.Service) *WebServer {
 	if service == nil {
 		panic("service is nil")
 	}
@@ -35,7 +35,7 @@ func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
 
 func (s *WebServer) handleError(c *gin.Context, err error) bool {
 	if err != nil {
-		if errors.Is(err, adapters.ErrRoomNotFound) {
+		if errors.Is(err, adapters.ErrProbeNotFound) {
 			c.AbortWithStatus(http.StatusNotFound)
 			return true
 		}

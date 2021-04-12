@@ -4,10 +4,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/homenitor/back/core/app/libraries"
-	"github.com/homenitor/back/core/app/samples"
+	"github.com/homenitor/back/core/app/services"
 )
 
-func Start(service *samples.Service, logging libraries.Logging) {
+func Start(service *services.Service, logging libraries.Logging) {
 	gin.SetMode(gin.ReleaseMode)
 
 	r := gin.New()

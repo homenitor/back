@@ -7,14 +7,13 @@ import (
 
 func main() {
 	logging := factories.GetLoggingLibrary()
-	samplesService := factories.GetSamplesService()
+	service := factories.GetService()
 	mqttServer := factories.GetMQTTServer()
-	probesService := factories.GetProbesService()
 
-	probesService.StartProbesDiscovery()
+	service.StartProbesDiscovery()
 
-	mqttServer.SubscribeToRoomTemperature("livingroom")
-	mqttServer.SubscribeToRoomHumidity("livingroom")
+	mqttServer.SubscribeToRoomTemperature(1)
+	mqttServer.SubscribeToRoomHumidity(1)
 
-	web.Start(samplesService, logging)
+	web.Start(service, logging)
 }

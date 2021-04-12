@@ -3,7 +3,9 @@ package adapters
 import "errors"
 
 var (
-	ErrRoomNotFound    = errors.New("room not found")
-	ErrNilMqttClient   = errors.New("mqtt client is nil")
-	ErrUnknownLogLevel = errors.New("unknown log level")
+	ErrProbeNotFound         = errors.New("probe not found")
+	ErrNilMqttClient         = errors.New("mqtt client is nil")
+	ErrNilMqttServer         = errors.New("mqtt server is nil")
+	ErrUnknownLogLevel       = errors.New("unknown log level")
+	ErrUnknownSampleCategory = errors.New("unknown sample category")
 )

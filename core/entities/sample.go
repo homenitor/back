@@ -7,32 +7,21 @@ import (
 )
 
 type Sample struct {
-	room       string
 	category   values.SampleCategory
 	sampleDate time.Time
 	value      float64
 }
 
 func NewSample(
-	room string,
 	category values.SampleCategory,
 	sampleDate time.Time,
 	value float64,
 ) (*Sample, error) {
-	if room == "" {
-		return nil, ErrEmptyRoom
-	}
-
 	return &Sample{
-		room:       room,
 		category:   category,
 		sampleDate: sampleDate,
 		value:      value,
 	}, nil
-}
-
-func (s *Sample) Room() string {
-	return s.room
 }
 
 func (s *Sample) Value() float64 {
