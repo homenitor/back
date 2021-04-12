@@ -14,14 +14,13 @@ func (s *Service) saveSample(probeID int, category values.SampleCategory, date t
 	}
 
 	s.logging.Debugf("Save \"%s\" sample for probe \"%d\"", category, probeID)
-
 	return s.repository.SaveSample(probeID, sample)
 }
 
 func (s *Service) getLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error) {
 	t, err := s.repository.GetLastSample(probeID, category)
 	if err != nil {
-		s.logging.Errorf("Error \"%s\" occured while getting last \"%s\" sample for room \"%s\"", err.Error(), category, probeID)
+		s.logging.Errorf("Error \"%s\" occured while getting last \"%s\" sample for probe \"%d\"", err.Error(), category, probeID)
 		return nil, err
 	}
 

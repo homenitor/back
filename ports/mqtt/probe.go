@@ -8,8 +8,8 @@ const (
 	discoverProbesTopic = "discover/probes"
 )
 
-func (s *MQTTServer) SubscribeToDiscoverProbes(room string) {
-	s.subscribe(discoverProbesTopic, s.HumidityHandler)
+func (s *MQTTServer) SubscribeToDiscoverProbes() {
+	s.subscribe(discoverProbesTopic, s.DiscoverProbesHandler)
 }
 
 func (s *MQTTServer) DiscoverProbesHandler(client mqtt.Client, msg mqtt.Message) {
