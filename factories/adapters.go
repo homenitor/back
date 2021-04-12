@@ -28,7 +28,6 @@ func GetMQTTProbesLibrary() libraries.ProbesLibrary {
 
 		probesLibrary, err = adapters.NewMQTTProbes(
 			GetMQTTClient(),
-			GetMQTTServer(),
 			GetLoggingLibrary(),
 			qualityOfService,
 		)

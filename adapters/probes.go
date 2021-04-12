@@ -20,16 +20,11 @@ type MQTTProbes struct {
 
 func NewMQTTProbes(
 	mqttClient mqtt.Client,
-	mqttServer *mqttPorts.MQTTServer,
 	logging libraries.Logging,
 	qualityOfService int,
 ) (*MQTTProbes, error) {
 	if mqttClient == nil {
 		return nil, ErrNilMqttClient
-	}
-
-	if mqttServer == nil {
-		return nil, ErrNilMqttServer
 	}
 
 	if logging == nil {
@@ -38,7 +33,6 @@ func NewMQTTProbes(
 
 	return &MQTTProbes{
 		mqttClient:       mqttClient,
-		mqttServer:       mqttServer,
 		logging:          logging,
 		qualityOfService: qualityOfService,
 	}, nil
@@ -49,12 +43,4 @@ func (p *MQTTProbes) SendDiscoveryMessage() {
 
 	token := p.mqttClient.Publish(discoveryTopic, byte(p.qualityOfService), true, "")
 	token.Wait()
-}
-
-func (p *MQTTProbes) SubscribeToProbeHumidity(probeID int) {
-	p.mqttServer.SubscribeToRoomHumidity(probeID)
-}
-
-func (p *MQTTProbes) SubscribeToProbeTemperature(probeID int) {
-	p.mqttServer.SubscribeToRoomTemperature(probeID)
 }

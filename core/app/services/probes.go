@@ -25,13 +25,6 @@ func (s *Service) createProbe(prodeID int) error {
 	return s.repository.SaveProbe(probe)
 }
 
-func (s *Service) subscribeToProbeTopics(probeID int) error {
-	s.probesLibrary.SubscribeToProbeHumidity(probeID)
-	s.probesLibrary.SubscribeToProbeTemperature(probeID)
-
-	return nil
-}
-
 func (s *Service) StartProbesDiscovery() {
 	go func() {
 		for {

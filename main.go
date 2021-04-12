@@ -12,8 +12,8 @@ func main() {
 
 	service.StartProbesDiscovery()
 
-	mqttServer.SubscribeToRoomTemperature(1)
-	mqttServer.SubscribeToRoomHumidity(1)
+	mqttServer.SubscribeToProbeTemperature(1)
+	mqttServer.SubscribeToProbeHumidity(1)
 
 	web.Start(service, logging)
 }

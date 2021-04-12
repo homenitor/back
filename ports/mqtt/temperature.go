@@ -11,7 +11,7 @@ const (
 	temperatureTopicTemplate = "%d/temperature"
 )
 
-func (s *MQTTServer) SubscribeToRoomTemperature(probeID int) {
+func (s *MQTTServer) SubscribeToProbeTemperature(probeID int) {
 	topic := fmt.Sprintf(temperatureTopicTemplate, probeID)
 
 	s.subscribe(topic, s.HumidityHandler)

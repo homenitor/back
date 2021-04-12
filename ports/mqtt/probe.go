@@ -19,5 +19,12 @@ func (s *MQTTServer) DiscoverProbesHandler(client mqtt.Client, msg mqtt.Message)
 		return
 	}
 
-	s.service.DiscoverProbe(probeID)
+	err = s.service.DiscoverProbe(probeID)
+	if err != nil {
+		s.logging.Error(err)
+		return
+	}
+
+	s.SubscribeToProbeHumidity(probeID)
+	s.SubscribeToProbeTemperature(probeID)
 }
