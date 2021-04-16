@@ -22,6 +22,20 @@ func NewInMemoryRepository() libraries.Repository {
 	}
 }
 
+func (r *InMemoryRepository) ListProbes() ([]*entities.ProbeListingView, error) {
+	probeReturns := make([]*entities.ProbeListingView, 0)
+	for _, p := range r.probes {
+		probeReturn := &entities.ProbeListingView{
+			ID:   p.ID(),
+			Name: p.Name(),
+		}
+
+		probeReturns = append(probeReturns, probeReturn)
+	}
+
+	return probeReturns, nil
+}
+
 func (r *InMemoryRepository) GetProbe(id int) (*entities.Probe, error) {
 	probe, ok := r.probes[id]
 	if !ok {

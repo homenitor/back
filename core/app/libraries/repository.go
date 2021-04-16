@@ -11,4 +11,5 @@ type Repository interface {
 
 	GetProbe(probeID int) (*entities.Probe, error)
 	SaveProbe(probe *entities.Probe) error
+	ListProbes() ([]*entities.ProbeListingView, error)
 }

@@ -2,6 +2,11 @@ package entities
 
 import "github.com/homenitor/back/core/app/common"
 
+type ProbeListingView struct {
+	ID   int
+	Name string
+}
+
 type Probe struct {
 	id           int
 	name         string

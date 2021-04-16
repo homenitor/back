@@ -7,6 +7,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (s *WebServer) ListProbes(c *gin.Context) {
+	probes, err := s.service.ListProbes()
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	probesResponse := make([]*GetProbesResponse, 0)
+	for _, probe := range probes {
+		response := &GetProbesResponse{
+			ID:   probe.ID,
+			Name: probe.Name,
+		}
+		probesResponse = append(probesResponse, response)
+	}
+
+	c.JSON(http.StatusOK, probesResponse)
+}
+
 func (s *WebServer) GetLastTemperature(c *gin.Context) {
 	probeIDString := c.Param("probeID")
 	if probeIDString == "" {

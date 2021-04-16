@@ -6,7 +6,6 @@ import (
 
 	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
-	"github.com/homenitor/back/core/app/services"
 	"github.com/homenitor/back/core/entities"
 	"github.com/homenitor/back/core/values"
 	"github.com/stretchr/testify/assert"
@@ -21,7 +20,7 @@ func TestGetLastTemperatureRepositoryError(t *testing.T) {
 
 	probeLibraryMock := &libraries.ProbesLibraryMock{}
 
-	service, err := services.NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
 	assert.NoError(t, err)
 
 	result, err := service.GetLastTemperature(probeID)
@@ -39,11 +38,37 @@ func TestGetLastTemperatureOK(t *testing.T) {
 
 	probeLibraryMock := &libraries.ProbesLibraryMock{}
 
-	service, err := services.NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
 	assert.NoError(t, err)
 
 	result, err := service.GetLastTemperature(probeID)
 
 	assert.Equal(t, temperature, result)
 	assert.Nil(t, err)
+}
+
+func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
+	repositoryMock := &libraries.RepositoryMock{}
+	repositoryMock.On("SaveSample", probeID, mock.Anything).Return(common.ErrUnknown)
+	loggingMock := &libraries.LoggingMock{}
+	probeLibraryMock := &libraries.ProbesLibraryMock{}
+
+	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	assert.NoError(t, err)
+
+	err = service.SaveTemperature(probeID, date, value)
+	assert.Equal(t, common.ErrUnknown, err)
+}
+
+func TestSaveTemperatureOK(t *testing.T) {
+	repositoryMock := &libraries.RepositoryMock{}
+	repositoryMock.On("SaveSample", probeID, mock.Anything).Return(nil)
+	loggingMock := &libraries.LoggingMock{}
+	probeLibraryMock := &libraries.ProbesLibraryMock{}
+
+	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	assert.NoError(t, err)
+
+	err = service.SaveTemperature(probeID, date, value)
+	assert.NoError(t, err)
 }
