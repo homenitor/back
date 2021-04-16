@@ -40,3 +40,4 @@ jobs:
           CC_TEST_REPORTER_ID: 2ab99af35ea29d5d98540488d5ca0faca5b45ef0e6b0f91c8745a267a2b1bad3
         with:
           coverageCommand: go test -v ./... -coverprofile c.out
+          prefix: github.com/homenitor/back
