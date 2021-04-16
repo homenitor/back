@@ -34,5 +34,10 @@ jobs:
       - name: Build
         run: go build -v .
 
-      - name: Unit tests
-        run: go test -v ./...
+      - name: Coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: 2ab99af35ea29d5d98540488d5ca0faca5b45ef0e6b0f91c8745a267a2b1bad3
+        with:
+          coverageCommand: go test -v ./... -coverprofile c.out
+          prefix: github.com/homenitor/back
