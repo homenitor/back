@@ -6,10 +6,10 @@ import (
 )
 
 var (
-	service *services.Service
+	service services.Service
 )
 
-func GetService() *services.Service {
+func GetService() services.Service {
 	if service == nil {
 		var err error
 

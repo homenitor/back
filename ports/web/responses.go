@@ -1,10 +1,6 @@
 package web
 
-type GetLastTemperatureResponse struct {
-	Value float64 `json:"value"`
-}
-
-type GetLastHumidityResponse struct {
+type GetLastSampleResponse struct {
 	Value float64 `json:"value"`
 }
 
