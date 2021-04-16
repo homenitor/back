@@ -10,5 +10,5 @@ type GetLastHumidityResponse struct {
 
 type GetProbesResponse struct {
 	ID   int    `json:"id"`
-	Name string `json:"name"`
+	Name string `json:"name,omitempty"`
 }

@@ -6,12 +6,11 @@ import (
 
 	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
-	"github.com/homenitor/back/core/app/services"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewSamplesServiceNilRepository(t *testing.T) {
-	result, err := services.NewService(nil, nil, nil, time.Second)
+	result, err := NewService(nil, nil, nil, time.Second)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrNilRepository, err)
@@ -20,7 +19,7 @@ func TestNewSamplesServiceNilRepository(t *testing.T) {
 func TestNewSamplesServiceNilLogging(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 
-	result, err := services.NewService(repositoryMock, nil, nil, time.Second)
+	result, err := NewService(repositoryMock, nil, nil, time.Second)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrNilLogging, err)
@@ -30,7 +29,7 @@ func TestNewSamplesServiceNilProbesLibrary(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	loggingMock := &libraries.LoggingMock{}
 
-	result, err := services.NewService(repositoryMock, loggingMock, nil, time.Second)
+	result, err := NewService(repositoryMock, loggingMock, nil, time.Second)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrNilProbeLibrary, err)
@@ -41,7 +40,7 @@ func TestNewSamplesServiceOK(t *testing.T) {
 	loggingMock := &libraries.LoggingMock{}
 	probesLibraryMock := &libraries.ProbesLibraryMock{}
 
-	result, err := services.NewService(repositoryMock, loggingMock, probesLibraryMock, time.Second)
+	result, err := NewService(repositoryMock, loggingMock, probesLibraryMock, time.Second)
 
 	assert.NotNil(t, result)
 	assert.Nil(t, err)
