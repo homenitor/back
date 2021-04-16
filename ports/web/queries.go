@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/homenitor/back/core/values"
 )
 
 func (s *WebServer) ListProbes(c *gin.Context) {
@@ -39,7 +40,7 @@ func (s *WebServer) GetLastTemperature(c *gin.Context) {
 		return
 	}
 
-	temperature, err := s.service.GetLastTemperature(probeID)
+	temperature, err := s.service.GetLastSample(probeID, values.TEMPERATURE_SAMPLE_CATEGORY)
 	hasError := s.handleError(c, err)
 	if hasError {
 		return
@@ -64,7 +65,7 @@ func (s *WebServer) GetLastHumidity(c *gin.Context) {
 		c.AbortWithStatus(400)
 		return
 	}
-	humidity, err := s.service.GetLastHumidity(probeID)
+	humidity, err := s.service.GetLastSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
 	hasError := s.handleError(c, err)
 	if hasError {
 		return

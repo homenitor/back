@@ -12,42 +12,42 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestGetLastTemperatureRepositoryError(t *testing.T) {
+func TestGetLastSampleRepositoryError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastSample", mock.Anything, values.TEMPERATURE_SAMPLE_CATEGORY).Return(nil, common.ErrUnknown)
+	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(nil, common.ErrUnknown)
 
 	loggingMock := &libraries.LoggingMock{}
 
-	probeLibraryMock := &libraries.ProbesLibraryMock{}
+	probesLibrary := &libraries.ProbesLibraryMock{}
 
-	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	service, err := NewService(repositoryMock, loggingMock, probesLibrary, time.Second)
 	assert.NoError(t, err)
 
-	result, err := service.GetLastTemperature(probeID)
+	result, err := service.GetLastSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrUnknown, err)
 }
 
-func TestGetLastTemperatureOK(t *testing.T) {
+func TestGetLastSampleOK(t *testing.T) {
 	temperature := &entities.Sample{}
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastSample", mock.Anything, values.TEMPERATURE_SAMPLE_CATEGORY).Return(temperature, nil)
+	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(temperature, nil)
 
 	loggingMock := &libraries.LoggingMock{}
 
-	probeLibraryMock := &libraries.ProbesLibraryMock{}
+	probesLibrary := &libraries.ProbesLibraryMock{}
 
-	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	service, err := NewService(repositoryMock, loggingMock, probesLibrary, time.Second)
 	assert.NoError(t, err)
 
-	result, err := service.GetLastTemperature(probeID)
+	result, err := service.GetLastSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
 
 	assert.Equal(t, temperature, result)
 	assert.Nil(t, err)
 }
 
-func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
+func TestSaveSampleRepositorySaveSampleError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	repositoryMock.On("SaveSample", probeID, mock.Anything).Return(common.ErrUnknown)
 	loggingMock := &libraries.LoggingMock{}
@@ -56,11 +56,11 @@ func TestSaveTemperatureRepositorySaveTemperatureError(t *testing.T) {
 	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
 	assert.NoError(t, err)
 
-	err = service.SaveTemperature(probeID, date, value)
+	err = service.SaveSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY, date, value)
 	assert.Equal(t, common.ErrUnknown, err)
 }
 
-func TestSaveTemperatureOK(t *testing.T) {
+func TestSaveSampleOK(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
 	repositoryMock.On("SaveSample", probeID, mock.Anything).Return(nil)
 	loggingMock := &libraries.LoggingMock{}
@@ -69,6 +69,6 @@ func TestSaveTemperatureOK(t *testing.T) {
 	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
 	assert.NoError(t, err)
 
-	err = service.SaveTemperature(probeID, date, value)
+	err = service.SaveSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY, date, value)
 	assert.NoError(t, err)
 }

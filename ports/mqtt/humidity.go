@@ -5,6 +5,7 @@ import (
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/homenitor/back/core/values"
 )
 
 const (
@@ -31,5 +32,5 @@ func (s *MQTTServer) HumidityHandler(client mqtt.Client, msg mqtt.Message) {
 	}
 
 	s.logging.Debugf("Received humidity sample \"%f\" for probe \"%d\"", humidityValue, probeID)
-	s.service.SaveHumidity(probeID, time.Now(), humidityValue)
+	s.service.SaveSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY, time.Now(), humidityValue)
 }
