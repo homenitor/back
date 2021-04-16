@@ -27,7 +27,7 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 	c.JSON(http.StatusOK, probesResponse)
 }
 
-func (s *WebServer) GetLastTemperature(c *gin.Context) {
+func (s *WebServer) GetLastSample(c *gin.Context) {
 	probeIDString := c.Param("probeID")
 	if probeIDString == "" {
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -40,39 +40,20 @@ func (s *WebServer) GetLastTemperature(c *gin.Context) {
 		return
 	}
 
-	temperature, err := s.service.GetLastSample(probeID, values.TEMPERATURE_SAMPLE_CATEGORY)
-	hasError := s.handleError(c, err)
-	if hasError {
-		return
-	}
-
-	response := &GetLastTemperatureResponse{
-		Value: temperature.Value(),
-	}
-
-	c.JSON(http.StatusOK, response)
-}
-
-func (s *WebServer) GetLastHumidity(c *gin.Context) {
-	probeIDString := c.Param("probeID")
-	if probeIDString == "" {
+	category := c.Param("category")
+	if category == "" || category != string(values.TEMPERATURE_SAMPLE_CATEGORY) && category != string(values.HUMIDITY_SAMPLE_CATEGORY) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	probeID, err := strconv.Atoi(probeIDString)
-	if err != nil {
-		c.AbortWithStatus(400)
-		return
-	}
-	humidity, err := s.service.GetLastSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
+	sample, err := s.service.GetLastSample(probeID, values.SampleCategory(category))
 	hasError := s.handleError(c, err)
 	if hasError {
 		return
 	}
 
-	response := &GetLastHumidityResponse{
-		Value: humidity.Value(),
+	response := &GetLastSampleResponse{
+		Value: sample.Value(),
 	}
 
 	c.JSON(http.StatusOK, response)

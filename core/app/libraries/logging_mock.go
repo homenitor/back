@@ -3,14 +3,29 @@ package libraries
 import "github.com/stretchr/testify/mock"
 
 type LoggingMock struct {
-	mock mock.Mock
+	mock.Mock
 }
 
-func (l *LoggingMock) Info(args ...interface{})                 {}
-func (l *LoggingMock) Infof(format string, args ...interface{}) {}
+func (m *LoggingMock) Info(args ...interface{}) {
+	m.Called()
+}
 
-func (l *LoggingMock) Error(args ...interface{})                 {}
-func (l *LoggingMock) Errorf(format string, args ...interface{}) {}
+func (m *LoggingMock) Infof(format string, args ...interface{}) {
+	m.Called()
+}
 
-func (l *LoggingMock) Debug(args ...interface{})                 {}
-func (l *LoggingMock) Debugf(format string, args ...interface{}) {}
+func (m *LoggingMock) Error(args ...interface{}) {
+	m.Called()
+}
+
+func (m *LoggingMock) Errorf(format string, args ...interface{}) {
+	m.Called()
+}
+
+func (m *LoggingMock) Debug(args ...interface{}) {
+	m.Called()
+}
+
+func (m *LoggingMock) Debugf(format string, args ...interface{}) {
+	m.Called()
+}
