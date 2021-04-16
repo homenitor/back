@@ -9,7 +9,7 @@ type MQTTClientMock struct {
 	mock.Mock
 }
 
-func NewMQTTClientMock() mqtt.Client {
+func NewMQTTClientMock() *MQTTClientMock {
 	return &MQTTClientMock{}
 }
 
