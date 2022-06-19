@@ -69,7 +69,7 @@ func (r *InMemoryRepository) SaveSample(probeID string, sample *entities.Sample)
 	return nil
 }
 
-func (r *InMemoryRepository) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
+func (r *InMemoryRepository) GetLatestSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 

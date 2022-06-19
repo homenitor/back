@@ -17,8 +17,8 @@ func (s *service) SaveSample(probeID string, category values.SampleCategory, dat
 	return s.repository.SaveSample(probeID, sample)
 }
 
-func (s *service) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
-	t, err := s.repository.GetLastSample(probeID, category)
+func (s *service) GetLatestSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
+	t, err := s.repository.GetLatestSample(probeID, category)
 	if err != nil {
 		s.logging.Errorf("Error \"%s\" occured while getting last \"%s\" sample of probe \"%s\"", err.Error(), category, probeID)
 		return nil, err

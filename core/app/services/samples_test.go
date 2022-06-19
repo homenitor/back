@@ -14,7 +14,7 @@ import (
 
 func TestGetLastSampleRepositoryError(t *testing.T) {
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(nil, common.ErrUnknown)
+	repositoryMock.On("GetLatestSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(nil, common.ErrUnknown)
 
 	loggingMock := &libraries.LoggingMock{}
 
@@ -23,7 +23,7 @@ func TestGetLastSampleRepositoryError(t *testing.T) {
 	service, err := NewService(repositoryMock, loggingMock, probesLibrary, time.Second)
 	assert.NoError(t, err)
 
-	result, err := service.GetLastSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
+	result, err := service.GetLatestSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
 
 	assert.Nil(t, result)
 	assert.Equal(t, common.ErrUnknown, err)
@@ -32,7 +32,7 @@ func TestGetLastSampleRepositoryError(t *testing.T) {
 func TestGetLastSampleOK(t *testing.T) {
 	temperature := &entities.Sample{}
 	repositoryMock := &libraries.RepositoryMock{}
-	repositoryMock.On("GetLastSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(temperature, nil)
+	repositoryMock.On("GetLatestSample", mock.Anything, values.HUMIDITY_SAMPLE_CATEGORY).Return(temperature, nil)
 
 	loggingMock := &libraries.LoggingMock{}
 
@@ -41,7 +41,7 @@ func TestGetLastSampleOK(t *testing.T) {
 	service, err := NewService(repositoryMock, loggingMock, probesLibrary, time.Second)
 	assert.NoError(t, err)
 
-	result, err := service.GetLastSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
+	result, err := service.GetLatestSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY)
 
 	assert.Equal(t, temperature, result)
 	assert.Nil(t, err)

@@ -26,7 +26,7 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 	c.JSON(http.StatusOK, probesResponse)
 }
 
-func (s *WebServer) GetLastSample(c *gin.Context) {
+func (s *WebServer) GetLatestSample(c *gin.Context) {
 	probeID := c.GetString("probeID")
 
 	category := c.Param("category")
@@ -35,7 +35,7 @@ func (s *WebServer) GetLastSample(c *gin.Context) {
 		return
 	}
 
-	sample, err := s.service.GetLastSample(probeID, values.SampleCategory(category))
+	sample, err := s.service.GetLatestSample(probeID, values.SampleCategory(category))
 	hasError := s.handleError(c, err)
 	if hasError {
 		return

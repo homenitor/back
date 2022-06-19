@@ -7,7 +7,7 @@ import (
 
 type Repository interface {
 	SaveSample(probeID string, sample *entities.Sample) error
-	GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error)
+	GetLatestSample(probeID string, category values.SampleCategory) (*entities.Sample, error)
 
 	GetProbe(probeID string) (*entities.Probe, error)
 	SaveProbe(probe *entities.Probe) error

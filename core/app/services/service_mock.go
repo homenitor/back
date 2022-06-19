@@ -16,7 +16,7 @@ func NewServiceMock() *ServiceMock {
 	return &ServiceMock{}
 }
 
-func (m *ServiceMock) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
+func (m *ServiceMock) GetLatestSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	args := m.Called(probeID, category)
 	err := args.Error(1)
 	if err != nil {

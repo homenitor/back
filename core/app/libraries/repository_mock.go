@@ -40,7 +40,7 @@ func (m *RepositoryMock) SaveSample(probeID string, sample *entities.Sample) err
 	return args.Error(0)
 }
 
-func (m *RepositoryMock) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
+func (m *RepositoryMock) GetLatestSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	args := m.Called(probeID, category)
 
 	err := args.Error(1)
