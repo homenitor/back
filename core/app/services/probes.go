@@ -7,12 +7,12 @@ import (
 	"github.com/homenitor/back/core/entities"
 )
 
-func (s *Service) ListProbes() ([]*entities.ProbeListingView, error) {
+func (s *service) ListProbes() ([]*entities.ProbeListingView, error) {
 	s.logging.Debugf("List all probes")
 	return s.repository.ListProbes()
 }
 
-func (s *Service) DiscoverProbe(probeID string) error {
+func (s *service) DiscoverProbe(probeID string) error {
 	_, err := s.repository.GetProbe(probeID)
 	isProbeFound := err == nil
 	if isProbeFound {
@@ -28,7 +28,7 @@ func (s *Service) DiscoverProbe(probeID string) error {
 	return s.repository.SaveProbe(probe)
 }
 
-func (s *Service) StartProbesDiscovery() {
+func (s *service) StartProbesDiscovery() {
 	go func() {
 		for {
 			s.probesLibrary.SendDiscoveryMessage()

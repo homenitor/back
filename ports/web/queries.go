@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/homenitor/back/core/values"
 )
 
 func (s *WebServer) ListProbes(c *gin.Context) {
@@ -25,31 +26,23 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 	c.JSON(http.StatusOK, probesResponse)
 }
 
-func (s *WebServer) GetLastTemperature(c *gin.Context) {
+func (s *WebServer) GetLastSample(c *gin.Context) {
 	probeID := c.GetString("probeID")
-	temperature, err := s.service.GetLastTemperature(probeID)
+
+	category := c.Param("category")
+	if category == "" || category != string(values.TEMPERATURE_SAMPLE_CATEGORY) && category != string(values.HUMIDITY_SAMPLE_CATEGORY) {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	sample, err := s.service.GetLastSample(probeID, values.SampleCategory(category))
 	hasError := s.handleError(c, err)
 	if hasError {
 		return
 	}
 
-	response := &GetLastTemperatureResponse{
-		Value: temperature.Value(),
-	}
-
-	c.JSON(http.StatusOK, response)
-}
-
-func (s *WebServer) GetLastHumidity(c *gin.Context) {
-	probeID := c.GetString("probeID")
-	humidity, err := s.service.GetLastHumidity(probeID)
-	hasError := s.handleError(c, err)
-	if hasError {
-		return
-	}
-
-	response := &GetLastHumidityResponse{
-		Value: humidity.Value(),
+	response := &GetLastSampleResponse{
+		Value: sample.Value(),
 	}
 
 	c.JSON(http.StatusOK, response)

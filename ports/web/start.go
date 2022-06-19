@@ -7,7 +7,7 @@ import (
 	"github.com/homenitor/back/core/app/services"
 )
 
-func Start(service *services.Service, logging libraries.Logging) {
+func Start(service services.Service, logging libraries.Logging) {
 	gin.SetMode(gin.ReleaseMode)
 
 	r := gin.New()

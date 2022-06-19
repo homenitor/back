@@ -7,7 +7,7 @@ import (
 	"github.com/homenitor/back/core/values"
 )
 
-func (s *Service) saveSample(probeID string, category values.SampleCategory, date time.Time, value float64) error {
+func (s *service) SaveSample(probeID string, category values.SampleCategory, date time.Time, value float64) error {
 	sample, err := entities.NewSample(category, date, value)
 	if err != nil {
 		return err
@@ -17,7 +17,7 @@ func (s *Service) saveSample(probeID string, category values.SampleCategory, dat
 	return s.repository.SaveSample(probeID, sample)
 }
 
-func (s *Service) getLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
+func (s *service) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	t, err := s.repository.GetLastSample(probeID, category)
 	if err != nil {
 		s.logging.Errorf("Error \"%s\" occured while getting last \"%s\" sample of probe \"%s\"", err.Error(), category, probeID)

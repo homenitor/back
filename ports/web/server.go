@@ -10,16 +10,15 @@ import (
 )
 
 var (
-	lastTemperaturePath = "/probes/:probeID/getLatestTemperature"
-	lastHumidityPath    = "/probes/:probeID/getLatestHumidity"
-	listProbesPath      = "/probes"
+	getProbeLatestSamplePath = "/probes/:probeID/getLatestSample"
+	listProbesPath           = "/probes"
 )
 
 type WebServer struct {
-	service *services.Service
+	service services.Service
 }
 
-func NewWebServer(service *services.Service) *WebServer {
+func NewWebServer(service services.Service) *WebServer {
 	if service == nil {
 		panic("service is nil")
 	}
@@ -30,8 +29,7 @@ func NewWebServer(service *services.Service) *WebServer {
 }
 
 func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
-	r.GET(lastTemperaturePath, parseProbeIDMiddleware(), s.GetLastTemperature)
-	r.GET(lastHumidityPath, parseProbeIDMiddleware(), s.GetLastHumidity)
+	r.GET(getProbeLatestSamplePath, parseProbeIDMiddleware(), s.GetLastSample)
 	r.GET(listProbesPath, s.ListProbes)
 }
 
