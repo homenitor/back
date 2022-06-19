@@ -40,17 +40,10 @@ func (s *MQTTServer) subscribe(topic string, handler mqtt.MessageHandler) {
 	s.logging.Debugf("Subscribed to \"%s\"", topic)
 }
 
-func getProbeIDFromMessage(msg mqtt.Message) (int, error) {
+func getProbeIDFromMessage(msg mqtt.Message) (string, error) {
 	topic := msg.Topic()
 
-	probeIDString := strings.Split(topic, "/")[0]
-
-	probeID, err := strconv.Atoi(probeIDString)
-	if err != nil {
-		return 0, err
-	}
-
-	return probeID, nil
+	return strings.Split(topic, "/")[0], nil
 }
 
 func parseFloatPayload(msg mqtt.Message) (float64, error) {
@@ -61,4 +54,8 @@ func parseFloatPayload(msg mqtt.Message) (float64, error) {
 func parseIntPayload(msg mqtt.Message) (int, error) {
 	payload := string(msg.Payload())
 	return strconv.Atoi(payload)
+}
+
+func parseStringPayload(msg mqtt.Message) (string, error) {
+	return string(msg.Payload()), nil
 }

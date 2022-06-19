@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	lastTemperaturePath = "/probes/:probeID/temperatures/latest"
-	lastHumidityPath    = "/probes/:probeID/humidities/latest"
+	lastTemperaturePath = "/probes/:probeID/getLatestTemperature"
+	lastHumidityPath    = "/probes/:probeID/getLatestHumidity"
 	listProbesPath      = "/probes"
 )
 
