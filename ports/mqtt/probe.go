@@ -13,7 +13,7 @@ func (s *MQTTServer) SubscribeToDiscoverProbes() {
 }
 
 func (s *MQTTServer) DiscoverProbesHandler(client mqtt.Client, msg mqtt.Message) {
-	probeID, err := parseIntPayload(msg)
+	probeID, err := parseStringPayload(msg)
 	if err != nil {
 		s.logging.Error(err)
 		return

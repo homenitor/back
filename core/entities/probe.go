@@ -3,18 +3,18 @@ package entities
 import "github.com/homenitor/back/core/app/common"
 
 type ProbeListingView struct {
-	ID   int
+	ID   string
 	Name string
 }
 
 type Probe struct {
-	id           int
+	id           string
 	name         string
 	humidities   []*Sample
 	temperatures []*Sample
 }
 
-func NewProbeWithID(id int) *Probe {
+func NewProbeWithID(id string) *Probe {
 	return &Probe{
 		id:           id,
 		humidities:   make([]*Sample, 0),
@@ -22,7 +22,7 @@ func NewProbeWithID(id int) *Probe {
 	}
 }
 
-func NewProbeWithIdAndName(id int, name string) *Probe {
+func NewProbeWithIdAndName(id string, name string) *Probe {
 	return &Probe{
 		id:           id,
 		name:         name,
@@ -31,7 +31,7 @@ func NewProbeWithIdAndName(id int, name string) *Probe {
 	}
 }
 
-func (p *Probe) ID() int {
+func (p *Probe) ID() string {
 	return p.id
 }
 

@@ -20,7 +20,7 @@ func (m *RepositoryMock) ListProbes() ([]*entities.ProbeListingView, error) {
 	return args.Get(0).([]*entities.ProbeListingView), nil
 }
 
-func (m *RepositoryMock) GetProbe(probeID int) (*entities.Probe, error) {
+func (m *RepositoryMock) GetProbe(probeID string) (*entities.Probe, error) {
 	args := m.Called(probeID)
 	err := args.Error(1)
 	if err != nil {
@@ -35,12 +35,12 @@ func (m *RepositoryMock) SaveProbe(probe *entities.Probe) error {
 	return args.Error(0)
 }
 
-func (m *RepositoryMock) SaveSample(probeID int, sample *entities.Sample) error {
+func (m *RepositoryMock) SaveSample(probeID string, sample *entities.Sample) error {
 	args := m.Called(probeID, sample)
 	return args.Error(0)
 }
 
-func (m *RepositoryMock) GetLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error) {
+func (m *RepositoryMock) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	args := m.Called(probeID, category)
 
 	err := args.Error(1)

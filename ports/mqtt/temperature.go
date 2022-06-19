@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	temperatureTopicTemplate = "%d/temperature"
+	temperatureTopicTemplate = "%s/temperature"
 )
 
-func (s *MQTTServer) SubscribeToProbeTemperature(probeID int) {
+func (s *MQTTServer) SubscribeToProbeTemperature(probeID string) {
 	topic := fmt.Sprintf(temperatureTopicTemplate, probeID)
 
 	s.subscribe(topic, s.HumidityHandler)
@@ -30,6 +30,6 @@ func (s *MQTTServer) TemperatureHandler(client mqtt.Client, msg mqtt.Message) {
 		return
 	}
 
-	s.logging.Debugf("Received temperature sample \"%f\" for probe \"%d\"", temperatureValue, probeID)
+	s.logging.Debugf("Received temperature sample \"%f\" from probe \"%s\"", temperatureValue, probeID)
 	s.service.SaveTemperature(probeID, time.Now(), temperatureValue)
 }

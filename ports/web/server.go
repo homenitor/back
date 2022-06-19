@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	lastTemperaturePath = "/probes/:probeID/temperatures/latest"
-	lastHumidityPath    = "/probes/:probeID/humidities/latest"
+	lastTemperaturePath = "/probes/:probeID/getLatestTemperature"
+	lastHumidityPath    = "/probes/:probeID/getLatestHumidity"
 	listProbesPath      = "/probes"
 )
 
@@ -30,8 +30,8 @@ func NewWebServer(service *services.Service) *WebServer {
 }
 
 func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
-	r.GET(lastTemperaturePath, s.GetLastTemperature)
-	r.GET(lastHumidityPath, s.GetLastHumidity)
+	r.GET(lastTemperaturePath, parseProbeIDMiddleware(), s.GetLastTemperature)
+	r.GET(lastHumidityPath, parseProbeIDMiddleware(), s.GetLastHumidity)
 	r.GET(listProbesPath, s.ListProbes)
 }
 
