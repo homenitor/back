@@ -18,10 +18,10 @@ type service struct {
 }
 
 type Service interface {
-	GetLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error)
-	SaveSample(probeID int, category values.SampleCategory, date time.Time, value float64) error
+	GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error)
+	SaveSample(probeID string, category values.SampleCategory, date time.Time, value float64) error
 	ListProbes() ([]*entities.ProbeListingView, error)
-	DiscoverProbe(probeID int) error
+	DiscoverProbe(probeID string) error
 	StartProbesDiscovery()
 }
 

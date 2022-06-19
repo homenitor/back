@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	sampleTopicTemplate = "%d/samples/%s"
+	sampleTopicTemplate = "%s/samples/%s"
 )
 
-func (s *MQTTServer) SubscribeToProbeSample(probeID int, category values.SampleCategory) {
+func (s *MQTTServer) SubscribeToProbeSample(probeID string, category values.SampleCategory) {
 	topic := fmt.Sprintf(sampleTopicTemplate, probeID, category)
 
 	s.subscribe(topic, s.SampleHandler)

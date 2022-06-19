@@ -13,9 +13,9 @@ import (
 )
 
 func TestDiscoverProbesHandlerInvalidPayload(t *testing.T) {
-	payload := []byte("invalid")
+	payload := []byte(invalidProbeID)
 	category := values.HUMIDITY_SAMPLE_CATEGORY
-	topic := fmt.Sprintf(sampleTopicTemplate, probeID, category)
+	topic := fmt.Sprintf(sampleTopicTemplate, invalidProbeID, category)
 	msgMock := &clients.MessageMock{}
 	msgMock.On("Topic").Return(topic)
 	msgMock.On("Payload").Return(payload)
@@ -24,7 +24,7 @@ func TestDiscoverProbesHandlerInvalidPayload(t *testing.T) {
 	tokenMock.On("Wait").Return(true)
 	mqttClientMock := clients.NewMQTTClientMock()
 	serviceMock := services.NewServiceMock()
-	serviceMock.On("DiscoverProbe", probeID).Return(common.ErrUnknown)
+	serviceMock.On("DiscoverProbe", invalidProbeID).Return(common.ErrUnknown)
 	loggingLibraryMock := &libraries.LoggingMock{}
 	qualityOfService := 2
 
@@ -37,7 +37,7 @@ func TestDiscoverProbesHandlerInvalidPayload(t *testing.T) {
 }
 
 func TestDiscoverProbesHandlerDiscoverProbesError(t *testing.T) {
-	payload := []byte("1")
+	payload := []byte(probeID)
 	category := values.HUMIDITY_SAMPLE_CATEGORY
 	topic := fmt.Sprintf(sampleTopicTemplate, probeID, category)
 	msgMock := &clients.MessageMock{}
@@ -61,7 +61,7 @@ func TestDiscoverProbesHandlerDiscoverProbesError(t *testing.T) {
 }
 
 func TestDiscoverProbesHandlerOK(t *testing.T) {
-	payload := []byte("1")
+	payload := []byte(probeID)
 	category := values.HUMIDITY_SAMPLE_CATEGORY
 	topic := fmt.Sprintf(sampleTopicTemplate, probeID, category)
 	msgMock := &clients.MessageMock{}

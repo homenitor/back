@@ -12,12 +12,12 @@ import (
 type InMemoryRepository struct {
 	lock *sync.RWMutex
 
-	probes map[int]*entities.Probe
+	probes map[string]*entities.Probe
 }
 
 func NewInMemoryRepository() libraries.Repository {
 	return &InMemoryRepository{
-		probes: make(map[int]*entities.Probe, 0),
+		probes: make(map[string]*entities.Probe, 0),
 		lock:   &sync.RWMutex{},
 	}
 }
@@ -36,7 +36,7 @@ func (r *InMemoryRepository) ListProbes() ([]*entities.ProbeListingView, error) 
 	return probeReturns, nil
 }
 
-func (r *InMemoryRepository) GetProbe(id int) (*entities.Probe, error) {
+func (r *InMemoryRepository) GetProbe(id string) (*entities.Probe, error) {
 	probe, ok := r.probes[id]
 	if !ok {
 		return nil, common.ErrProbeNotFound
@@ -54,7 +54,7 @@ func (r *InMemoryRepository) SaveProbe(probe *entities.Probe) error {
 	return nil
 }
 
-func (r *InMemoryRepository) SaveSample(probeID int, sample *entities.Sample) error {
+func (r *InMemoryRepository) SaveSample(probeID string, sample *entities.Sample) error {
 	probe, isProbeFound := r.probes[probeID]
 	if !isProbeFound {
 		return common.ErrProbeNotFound
@@ -69,7 +69,7 @@ func (r *InMemoryRepository) SaveSample(probeID int, sample *entities.Sample) er
 	return nil
 }
 
-func (r *InMemoryRepository) GetLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error) {
+func (r *InMemoryRepository) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 

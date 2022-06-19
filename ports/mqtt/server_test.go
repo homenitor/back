@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	probeID = 1
+	probeID        = "robert"
+	invalidProbeID = "invalid"
 )
 
 type MessageMock struct {
@@ -54,11 +55,11 @@ func TestGetCategoryFromTopic(t *testing.T) {
 
 func TestGetProbeIDFromTopicValueNotAnInteger(t *testing.T) {
 	category := values.HUMIDITY_SAMPLE_CATEGORY
-	topic := fmt.Sprintf("%s/samples/%s", "wrong-id", category)
+	topic := fmt.Sprintf("%s/samples/%s", "", category)
 	result, err := getProbeIDFromTopic(topic)
 
-	assert.NotNil(t, err)
-	assert.Equal(t, 0, result)
+	assert.Error(t, err, ErrNilProbeID)
+	assert.Equal(t, "", result)
 }
 
 func TestGetProbeIDFromTopicOK(t *testing.T) {

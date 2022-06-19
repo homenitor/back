@@ -16,7 +16,7 @@ func NewServiceMock() *ServiceMock {
 	return &ServiceMock{}
 }
 
-func (m *ServiceMock) GetLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error) {
+func (m *ServiceMock) GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {
 	args := m.Called(probeID, category)
 	err := args.Error(1)
 	if err != nil {
@@ -26,7 +26,7 @@ func (m *ServiceMock) GetLastSample(probeID int, category values.SampleCategory)
 	return args.Get(0).(*entities.Sample), nil
 }
 
-func (m *ServiceMock) SaveSample(probeID int, category values.SampleCategory, date time.Time, value float64) error {
+func (m *ServiceMock) SaveSample(probeID string, category values.SampleCategory, date time.Time, value float64) error {
 	args := m.Called(probeID, category, value)
 	return args.Error(0)
 }
@@ -41,7 +41,7 @@ func (m *ServiceMock) ListProbes() ([]*entities.ProbeListingView, error) {
 	return args.Get(0).([]*entities.ProbeListingView), nil
 }
 
-func (m *ServiceMock) DiscoverProbe(probeID int) error {
+func (m *ServiceMock) DiscoverProbe(probeID string) error {
 	args := m.Called(probeID)
 	return args.Error(0)
 }

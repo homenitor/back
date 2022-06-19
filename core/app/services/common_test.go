@@ -4,7 +4,7 @@ import "time"
 
 const (
 	uuid    = "uuid"
-	probeID = 1
+	probeID = "robert"
 	value   = 1.5
 )
 

@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	lastSamplePath = "/probes/:probeID/samples/:category/latest"
-	listProbesPath = "/probes"
+	getProbeLatestSamplePath = "/probes/:probeID/getLatestSample"
+	listProbesPath           = "/probes"
 )
 
 type WebServer struct {
@@ -29,7 +29,7 @@ func NewWebServer(service services.Service) *WebServer {
 }
 
 func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
-	r.GET(lastSamplePath, s.GetLastSample)
+	r.GET(getProbeLatestSamplePath, parseProbeIDMiddleware(), s.GetLastSample)
 	r.GET(listProbesPath, s.ListProbes)
 }
 

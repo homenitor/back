@@ -6,10 +6,10 @@ import (
 )
 
 type Repository interface {
-	SaveSample(probeID int, sample *entities.Sample) error
-	GetLastSample(probeID int, category values.SampleCategory) (*entities.Sample, error)
+	SaveSample(probeID string, sample *entities.Sample) error
+	GetLastSample(probeID string, category values.SampleCategory) (*entities.Sample, error)
 
-	GetProbe(probeID int) (*entities.Probe, error)
+	GetProbe(probeID string) (*entities.Probe, error)
 	SaveProbe(probe *entities.Probe) error
 	ListProbes() ([]*entities.ProbeListingView, error)
 }

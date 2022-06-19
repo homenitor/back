@@ -2,7 +2,6 @@ package web
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/homenitor/back/core/values"
@@ -28,17 +27,7 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 }
 
 func (s *WebServer) GetLastSample(c *gin.Context) {
-	probeIDString := c.Param("probeID")
-	if probeIDString == "" {
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
-
-	probeID, err := strconv.Atoi(probeIDString)
-	if err != nil {
-		c.AbortWithStatus(400)
-		return
-	}
+	probeID := c.GetString("probeID")
 
 	category := c.Param("category")
 	if category == "" || category != string(values.TEMPERATURE_SAMPLE_CATEGORY) && category != string(values.HUMIDITY_SAMPLE_CATEGORY) {

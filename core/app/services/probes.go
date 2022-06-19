@@ -12,7 +12,7 @@ func (s *service) ListProbes() ([]*entities.ProbeListingView, error) {
 	return s.repository.ListProbes()
 }
 
-func (s *service) DiscoverProbe(probeID int) error {
+func (s *service) DiscoverProbe(probeID string) error {
 	_, err := s.repository.GetProbe(probeID)
 	isProbeFound := err == nil
 	if isProbeFound {
