@@ -26,12 +26,7 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 }
 
 func (s *WebServer) GetLastTemperature(c *gin.Context) {
-	probeID := c.Param("probeID")
-	if probeID == "" {
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
-
+	probeID := c.GetString("probeID")
 	temperature, err := s.service.GetLastTemperature(probeID)
 	hasError := s.handleError(c, err)
 	if hasError {
@@ -46,12 +41,7 @@ func (s *WebServer) GetLastTemperature(c *gin.Context) {
 }
 
 func (s *WebServer) GetLastHumidity(c *gin.Context) {
-	probeID := c.Param("probeID")
-	if probeID == "" {
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
-
+	probeID := c.GetString("probeID")
 	humidity, err := s.service.GetLastHumidity(probeID)
 	hasError := s.handleError(c, err)
 	if hasError {
