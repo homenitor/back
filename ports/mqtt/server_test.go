@@ -6,6 +6,7 @@ import (
 
 	"github.com/homenitor/back/clients"
 	"github.com/homenitor/back/core/values"
+	"github.com/homenitor/back/ports"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -58,7 +59,7 @@ func TestGetProbeIDFromTopicValueNotAnInteger(t *testing.T) {
 	topic := fmt.Sprintf("%s/samples/%s", "", category)
 	result, err := getProbeIDFromTopic(topic)
 
-	assert.Error(t, err, ErrNilProbeID)
+	assert.Error(t, err, ports.ErrNilProbeID)
 	assert.Equal(t, "", result)
 }
 
