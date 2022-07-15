@@ -37,12 +37,12 @@ func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
 func (s *WebServer) handleError(c *gin.Context, err error) bool {
 	if err != nil {
 		if errors.Is(err, adapters.ErrProbeNotFound) {
-			c.AbortWithStatus(http.StatusNotFound)
+			c.AbortWithStatusJSON(http.StatusNotFound, ErrorResponse{Message: err.Error()})
 			return true
 		}
 
 		if errors.Is(err, common.ErrNoSampleValueInProbe) {
-			c.AbortWithStatus(http.StatusNotFound)
+			c.AbortWithStatusJSON(http.StatusNotFound, ErrorResponse{Message: err.Error()})
 			return true
 		}
 	}

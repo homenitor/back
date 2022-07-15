@@ -8,6 +8,7 @@ import (
 	"github.com/homenitor/back/core/app/libraries"
 	"github.com/homenitor/back/core/app/services"
 	"github.com/homenitor/back/core/values"
+	"github.com/homenitor/back/ports"
 )
 
 type MQTTServer struct {
@@ -42,7 +43,7 @@ func getProbeIDFromTopic(topic string) (string, error) {
 	probeIDIndex := 0
 	probeID := strings.Split(topic, "/")[probeIDIndex]
 	if probeID == "" {
-		return "", ErrNilProbeID
+		return "", ports.ErrNilProbeID
 	}
 	return probeID, nil
 }
