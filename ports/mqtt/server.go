@@ -36,7 +36,7 @@ func (s *MQTTServer) subscribe(topic string, handler mqtt.MessageHandler) {
 	token := s.client.Subscribe(topic, byte(s.qualityOfService), handler)
 	token.Wait()
 
-	s.logging.Debugf("Subscribed to \"%s\"", topic)
+	s.logging.Debugf("subscribed: topic=\"%s\"", topic)
 }
 
 func getProbeIDFromTopic(topic string) (string, error) {

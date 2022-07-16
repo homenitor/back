@@ -1,7 +1,8 @@
 package web
 
 type GetLastSampleResponse struct {
-	Value float64 `json:"value"`
+	Value     float64 `json:"value"`
+	Timestamp int64   `json:"timestamp"`
 }
 
 type GetProbesResponse struct {

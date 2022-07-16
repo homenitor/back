@@ -13,9 +13,8 @@ func (s *service) ListProbes() ([]*entities.ProbeListingView, error) {
 }
 
 func (s *service) DiscoverProbe(probeID string) error {
-	_, err := s.repository.GetProbe(probeID)
-	isProbeFound := err == nil
-	if isProbeFound {
+	probe, err := s.repository.GetProbe(probeID)
+	if probe != nil {
 		return nil
 	}
 
@@ -24,8 +23,8 @@ func (s *service) DiscoverProbe(probeID string) error {
 		return err
 	}
 
-	probe := entities.NewProbeWithID(probeID)
-	return s.repository.SaveProbe(probe)
+	newProbe := entities.NewProbeWithID(probeID)
+	return s.repository.SaveProbe(newProbe)
 }
 
 func (s *service) StartProbesDiscovery() {

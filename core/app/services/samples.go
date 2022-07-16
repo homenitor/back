@@ -13,7 +13,7 @@ func (s *service) SaveSample(probeID string, category values.SampleCategory, dat
 		return err
 	}
 
-	s.logging.Debugf("Save \"%s\" sample of probe \"%s\"", category, probeID)
+	s.logging.Debugf("save sample: probe=\"%s\", category=\"%s\"", probeID, category)
 	return s.repository.SaveSample(probeID, sample)
 }
 
