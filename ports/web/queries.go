@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/homenitor/back/core/values"
-	"github.com/homenitor/back/ports"
 )
 
 func (s *WebServer) ListProbes(c *gin.Context) {
@@ -27,14 +26,36 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 	c.JSON(http.StatusOK, probesResponse)
 }
 
-func (s *WebServer) GetLatestSample(c *gin.Context) {
-	probeID := c.GetString("probeID")
+func (s *WebServer) GetSamplesOfCategory(c *gin.Context) {
+	sample_range := c.Param("range")
+	if sample_range == "" {
+		sample_range = "1h"
+	}
 
-	category := c.Param("category")
-	if category == "" || category != string(values.TEMPERATURE_SAMPLE_CATEGORY) && category != string(values.HUMIDITY_SAMPLE_CATEGORY) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, ErrorResponse{Message: ports.ErrUnknownSampleCategory.Error()})
+	category := c.GetString("category")
+	samples, err := s.service.GetSamplesByCategory(values.SampleCategory(category), sample_range)
+	hasError := s.handleError(c, err)
+	if hasError {
 		return
 	}
+
+	values := make([]GetSamplesOfCategoryValue, 0)
+	for _, sample := range samples {
+		value := sample.Values
+		value["measured_at"] = float64(sample.MeasuredAt.Unix())
+		values = append(values, value)
+	}
+
+	response := &GetSamplesOfCategoryResponse{
+		Values: values,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (s *WebServer) GetLatestSample(c *gin.Context) {
+	probeID := c.GetString("probeID")
+	category := c.GetString("category")
 
 	sample, err := s.service.GetLatestSample(probeID, values.SampleCategory(category))
 	hasError := s.handleError(c, err)

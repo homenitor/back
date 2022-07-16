@@ -30,6 +30,16 @@ func (m *RepositoryMock) GetProbe(probeID string) (*entities.Probe, error) {
 	return args.Get(0).(*entities.Probe), nil
 }
 
+func (m *RepositoryMock) GetSamples(category values.SampleCategory, query GetSamplesQuery) ([]*entities.GetSamplesView, error) {
+	args := m.Called(category, query)
+	err := args.Error(1)
+	if err != nil {
+		return nil, err
+	}
+
+	return args.Get(0).([]*entities.GetSamplesView), nil
+}
+
 func (m *RepositoryMock) SaveProbe(probe *entities.Probe) error {
 	args := m.Called(probe)
 	return args.Error(0)
