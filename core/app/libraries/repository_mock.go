@@ -50,3 +50,8 @@ func (m *RepositoryMock) GetLatestSample(probeID string, category values.SampleC
 
 	return args.Get(0).(*entities.Sample), nil
 }
+
+func (m *RepositoryMock) Disconnect() error {
+	args := m.Called()
+	return args.Error(0)
+}

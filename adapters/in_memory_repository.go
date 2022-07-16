@@ -76,7 +76,7 @@ func (r *InMemoryRepository) GetLatestSample(probeID string, category values.Sam
 	probe, ok := r.probes[probeID]
 
 	if !ok {
-		return nil, ErrProbeNotFound
+		return nil, common.ErrProbeNotFound
 	}
 
 	switch category {
@@ -87,6 +87,10 @@ func (r *InMemoryRepository) GetLatestSample(probeID string, category values.Sam
 	}
 
 	return nil, ErrUnknownSampleCategory
+}
+
+func (r *InMemoryRepository) Disconnect() error {
+	return nil
 }
 
 func (r *InMemoryRepository) getLatestTemperature(probe *entities.Probe) (*entities.Sample, error) {

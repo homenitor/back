@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/homenitor/back/adapters"
 	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/services"
 )
@@ -36,7 +35,7 @@ func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
 
 func (s *WebServer) handleError(c *gin.Context, err error) bool {
 	if err != nil {
-		if errors.Is(err, adapters.ErrProbeNotFound) {
+		if errors.Is(err, common.ErrProbeNotFound) {
 			c.AbortWithStatusJSON(http.StatusNotFound, ErrorResponse{Message: err.Error()})
 			return true
 		}

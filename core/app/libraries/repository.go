@@ -12,4 +12,5 @@ type Repository interface {
 	GetProbe(probeID string) (*entities.Probe, error)
 	SaveProbe(probe *entities.Probe) error
 	ListProbes() ([]*entities.ProbeListingView, error)
+	Disconnect() error
 }

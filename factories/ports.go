@@ -14,7 +14,7 @@ func GetMQTTServer() *mqtt.MQTTServer {
 		qualityOfService := config.MQTTQualityOfService()
 		mqttServer = mqtt.NewMQTTServer(
 			GetMQTTClient(),
-			GetService(),
+			GetService(GetMongoDBRepository()),
 			GetLoggingLibrary(),
 			qualityOfService,
 		)

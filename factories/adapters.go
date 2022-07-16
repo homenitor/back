@@ -10,6 +10,7 @@ var (
 	logging            *adapters.Logging
 	probesLibrary      libraries.ProbesLibrary
 	inMemoryRepository libraries.Repository
+	mongoDBRepository  libraries.Repository
 )
 
 func GetLoggingLibrary() libraries.Logging {
@@ -38,6 +39,14 @@ func GetMQTTProbesLibrary() libraries.ProbesLibrary {
 	}
 
 	return probesLibrary
+}
+
+func GetMongoDBRepository() libraries.Repository {
+	if mongoDBRepository == nil {
+		mongoDBRepository = adapters.NewMongoDBRepository(GetLoggingLibrary())
+	}
+
+	return mongoDBRepository
 }
 
 func GetInMemoryRepository() libraries.Repository {

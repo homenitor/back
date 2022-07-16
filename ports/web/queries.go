@@ -44,7 +44,7 @@ func (s *WebServer) GetLatestSample(c *gin.Context) {
 
 	response := &GetLastSampleResponse{
 		Value:     sample.Value(),
-		Timestamp: sample.Timestamp().Unix(),
+		Timestamp: sample.MeasuredAt().Unix(),
 	}
 
 	c.JSON(http.StatusOK, response)

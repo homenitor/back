@@ -6,8 +6,15 @@ import (
 )
 
 func main() {
+	repository := factories.GetMongoDBRepository()
+	defer func() {
+		if err := repository.Disconnect(); err != nil {
+			panic(err)
+		}
+	}()
+
 	logging := factories.GetLoggingLibrary()
-	service := factories.GetService()
+	service := factories.GetService(repository)
 	mqttServer := factories.GetMQTTServer()
 
 	service.StartProbesDiscovery()
