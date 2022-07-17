@@ -15,6 +15,12 @@ run-dependencies:
 	@docker-compose -p $(APP_NAME) -f containers/docker-compose.yml pull;
 	@docker-compose -p $(APP_NAME) -f containers/docker-compose.yml up -d --build
 
+.PHONY: clean
+clean:
+	@echo "+ $@"
+	@docker-compose -p $(APP_NAME) -f containers/docker-compose.yml down || true;
+	rm -rf ./containers/volumes
+
 .PHONY: test
 test:
 	@echo "+ $@"

@@ -10,6 +10,7 @@ type values struct {
 	mqttHost             string
 	mqttPort             int
 	mqttQualityOfService int
+	mongodbUri           string
 }
 
 var instance *values
@@ -21,6 +22,7 @@ func init() {
 		mqttHost:             getString("MQTT_HOST", "127.0.0.1"),
 		mqttPort:             getInt("MQTT_PORT", 1883),
 		mqttQualityOfService: getInt("MQTT_QUALITY_OF_SERVICE", 2),
+		mongodbUri:           getString("MONGODB_URI", "mongodb://localhost:27017"),
 	}
 }
 
@@ -42,4 +44,8 @@ func MQTTPort() int {
 
 func MQTTQualityOfService() int {
 	return instance.mqttQualityOfService
+}
+
+func MongoDBURI() string {
+	return instance.mongodbUri
 }

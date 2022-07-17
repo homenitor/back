@@ -17,16 +17,18 @@ Sample categories can be either `temperature` or `humidity`.
 | `make run-app`          | Build and run app                        |
 | `make run`              | Launch `run-dependencies` then `run-app` |
 | `make test`             | Run all tests                            |
+| `make clean`            | Clean all files                          |
 
 ## Environment variables
 
-| Variable                  | Default value |
-| ------------------------- | ------------- |
-| `DISCOVERY_PERIOD`        | 1m            |
-| `LOG_LEVEL`               | info          |
-| `MQTT_HOST`               | 127.0.0.1     |
-| `MQTT_PORT`               | 1883          |
-| `MQTT_QUALITY_OF_SERVICE` | 2             |
+| Variable                  | Default value             |
+| ------------------------- | ------------------------- |
+| `DISCOVERY_PERIOD`        | 1m                        |
+| `LOG_LEVEL`               | info                      |
+| `MQTT_HOST`               | 127.0.0.1                 |
+| `MQTT_PORT`               | 1883                      |
+| `MQTT_QUALITY_OF_SERVICE` | 2                         |
+| `MONGODB_URI`             | mongodb://localhost:27017 |
 
 # Ports
 
