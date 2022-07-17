@@ -2,6 +2,7 @@ package factories
 
 import (
 	"github.com/homenitor/back/adapters"
+	"github.com/homenitor/back/adapters/storage"
 	"github.com/homenitor/back/config"
 	"github.com/homenitor/back/core/app/libraries"
 )
@@ -43,7 +44,7 @@ func GetMQTTProbesLibrary() libraries.ProbesLibrary {
 
 func GetRepository() libraries.Repository {
 	if mongoDBRepository == nil {
-		mongoDBRepository = adapters.NewMongoDBRepository(GetLoggingLibrary())
+		mongoDBRepository = storage.NewMongoDBRepository(GetLoggingLibrary())
 	}
 
 	return mongoDBRepository
