@@ -9,6 +9,8 @@ var (
 	ErrNilLogging      = errors.New("logging is nil")
 	ErrNilProbeLibrary = errors.New("probes library is nil")
 
+	ErrInvalidRange = errors.New("invalid range")
+
 	ErrNoSampleValueInProbe = errors.New("no value found in probe")
 
 	ErrProbeNotFound = errors.New("probe was not found")

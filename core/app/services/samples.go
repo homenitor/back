@@ -3,6 +3,7 @@ package services
 import (
 	"time"
 
+	"github.com/homenitor/back/core/app/common"
 	"github.com/homenitor/back/core/app/libraries"
 	"github.com/homenitor/back/core/entities"
 	"github.com/homenitor/back/core/values"
@@ -18,7 +19,7 @@ func (s *service) SaveSample(probeID string, category values.SampleCategory, dat
 func (s *service) GetSamplesByCategory(category values.SampleCategory, sample_range string) ([]*entities.GetSamplesView, error) {
 	duration_range, err := time.ParseDuration(sample_range)
 	if err != nil {
-		return nil, err
+		return nil, common.ErrInvalidRange
 	}
 
 	from := time.Now().Add(-duration_range)

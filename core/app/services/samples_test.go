@@ -72,3 +72,33 @@ func TestSaveSampleOK(t *testing.T) {
 	err = service.SaveSample(probeID, values.HUMIDITY_SAMPLE_CATEGORY, date, value)
 	assert.NoError(t, err)
 }
+
+func TestGetSampleByCategoryInvalidRange(t *testing.T) {
+	repositoryMock := &libraries.RepositoryMock{}
+	loggingMock := &libraries.LoggingMock{}
+	probeLibraryMock := &libraries.ProbesLibraryMock{}
+
+	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	assert.NoError(t, err)
+
+	result, err := service.GetSamplesByCategory(values.HUMIDITY_SAMPLE_CATEGORY, "invalid-range")
+	assert.Nil(t, result)
+
+	assert.Equal(t, common.ErrInvalidRange, err)
+}
+
+func TestGetSamplesByCategoryOK(t *testing.T) {
+	category := values.HUMIDITY_SAMPLE_CATEGORY
+	repositoryMock := &libraries.RepositoryMock{}
+	loggingMock := &libraries.LoggingMock{}
+	probeLibraryMock := &libraries.ProbesLibraryMock{}
+	samples := make([]*entities.GetSamplesView, 0)
+	repositoryMock.On("GetSamples", category, mock.Anything).Return(samples, nil)
+
+	service, err := NewService(repositoryMock, loggingMock, probeLibraryMock, time.Second)
+	assert.NoError(t, err)
+
+	result, err := service.GetSamplesByCategory(category, "1m")
+	assert.Equal(t, samples, result)
+	assert.NoError(t, err)
+}
