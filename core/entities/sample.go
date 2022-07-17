@@ -16,12 +16,12 @@ func NewSample(
 	category values.SampleCategory,
 	timestamp time.Time,
 	value float64,
-) (*Sample, error) {
+) *Sample {
 	return &Sample{
 		category:    category,
 		measured_at: timestamp,
 		value:       value,
-	}, nil
+	}
 }
 
 func (s *Sample) Value() float64 {

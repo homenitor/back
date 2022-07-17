@@ -189,7 +189,7 @@ func (r *MongoDBRepository) GetLatestSample(probeID string, category values.Samp
 		return nil, err
 	}
 
-	return entities.NewSample(result.Category, result.MeasuredAt, result.Value)
+	return entities.NewSample(result.Category, result.MeasuredAt, result.Value), nil
 }
 
 func (r *MongoDBRepository) Disconnect() error {

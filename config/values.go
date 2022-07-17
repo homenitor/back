@@ -16,8 +16,8 @@ var instance *values
 
 func init() {
 	instance = &values{
-		discoveryPeriod:      getTimeDuration("DISCOVERY_PERIOD", "10s"),
-		logLevel:             getString("LOG_LEVEL", "debug"),
+		discoveryPeriod:      getTimeDuration("DISCOVERY_PERIOD", "1m"),
+		logLevel:             getString("LOG_LEVEL", "info"),
 		mqttHost:             getString("MQTT_HOST", "127.0.0.1"),
 		mqttPort:             getInt("MQTT_PORT", 1883),
 		mqttQualityOfService: getInt("MQTT_QUALITY_OF_SERVICE", 2),

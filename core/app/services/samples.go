@@ -9,10 +9,7 @@ import (
 )
 
 func (s *service) SaveSample(probeID string, category values.SampleCategory, date time.Time, value float64) error {
-	sample, err := entities.NewSample(category, date, value)
-	if err != nil {
-		return err
-	}
+	sample := entities.NewSample(category, date, value)
 
 	s.logging.Debugf("save sample: probe=\"%s\", category=\"%s\"", probeID, category)
 	return s.repository.SaveSample(probeID, sample)

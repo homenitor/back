@@ -41,7 +41,7 @@ func GetMQTTProbesLibrary() libraries.ProbesLibrary {
 	return probesLibrary
 }
 
-func GetMongoDBRepository() libraries.Repository {
+func GetRepository() libraries.Repository {
 	if mongoDBRepository == nil {
 		mongoDBRepository = adapters.NewMongoDBRepository(GetLoggingLibrary())
 	}
