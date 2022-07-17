@@ -58,6 +58,81 @@ func NewMongoDBRepository(logging libraries.Logging) libraries.Repository {
 	}
 }
 
+type MongoGetSample struct {
+	Probe string  `bson:"probe"`
+	Value float64 `bson:"value"`
+}
+
+type MongoGetSamples struct {
+	MeasuredAt time.Time        `bson:"_id"`
+	Samples    []MongoGetSample `bson:"samples"`
+	Average    float64          `bson:"average"`
+}
+
+func (r *MongoDBRepository) GetSamples(category values.SampleCategory, query libraries.GetSamplesQuery) ([]*entities.GetSamplesView, error) {
+	pipeline := bson.A{
+		bson.D{
+			{"$match",
+				bson.D{
+					{"category", category},
+					{"measured_at",
+						bson.D{
+							{"$gte", query.From},
+							{"$lte", query.To},
+						},
+					},
+				},
+			},
+		},
+		bson.D{
+			{"$group",
+				bson.D{
+					{"_id", "$measured_at"},
+					{"samples",
+						bson.D{
+							{"$push",
+								bson.D{
+									{"probe", "$probe"},
+									{"value", "$value"},
+								},
+							},
+						},
+					},
+					{"average", bson.D{{"$avg", "$value"}}},
+				},
+			},
+		},
+		bson.D{{"$sort", bson.D{{"_id", 1}}}},
+	}
+
+	cursor, err := r.samples().Aggregate(context.TODO(), pipeline)
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(context.TODO())
+
+	var results []*entities.GetSamplesView
+	for cursor.Next(context.TODO()) {
+		var doc MongoGetSamples
+		err := cursor.Decode(&doc)
+		if err != nil {
+			return nil, err
+		}
+		values := make(map[string]float64, 0)
+		for _, sample := range doc.Samples {
+			values[sample.Probe] = sample.Value
+		}
+		results = append(results, &entities.GetSamplesView{
+			MeasuredAt: doc.MeasuredAt,
+			Values:     values,
+			Average:    doc.Average,
+		})
+	}
+
+	return results, nil
+}
+
 func (r *MongoDBRepository) ListProbes() ([]*entities.ProbeListingView, error) {
 	cursor, err := r.probes().Find(context.TODO(), nil)
 	if err != nil {

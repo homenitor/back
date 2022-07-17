@@ -48,11 +48,3 @@ func GetMongoDBRepository() libraries.Repository {
 
 	return mongoDBRepository
 }
-
-func GetInMemoryRepository() libraries.Repository {
-	if inMemoryRepository == nil {
-		inMemoryRepository = adapters.NewInMemoryRepository()
-	}
-
-	return inMemoryRepository
-}

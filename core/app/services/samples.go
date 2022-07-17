@@ -3,6 +3,7 @@ package services
 import (
 	"time"
 
+	"github.com/homenitor/back/core/app/libraries"
 	"github.com/homenitor/back/core/entities"
 	"github.com/homenitor/back/core/values"
 )
@@ -15,6 +16,19 @@ func (s *service) SaveSample(probeID string, category values.SampleCategory, dat
 
 	s.logging.Debugf("save sample: probe=\"%s\", category=\"%s\"", probeID, category)
 	return s.repository.SaveSample(probeID, sample)
+}
+
+func (s *service) GetSamplesByCategory(category values.SampleCategory, sample_range string) ([]*entities.GetSamplesView, error) {
+	duration_range, err := time.ParseDuration(sample_range)
+	if err != nil {
+		return nil, err
+	}
+
+	from := time.Now().Add(-duration_range)
+	to := time.Now()
+	query := libraries.GetSamplesQuery{From: &from, To: &to}
+
+	return s.repository.GetSamples(category, query)
 }
 
 func (s *service) GetLatestSample(probeID string, category values.SampleCategory) (*entities.Sample, error) {

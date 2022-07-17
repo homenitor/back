@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	getSamplesOfCategoryPath = "/samples/:category"
 	getProbeLatestSamplePath = "/probes/:probeID/getLatestSample/:category"
 	listProbesPath           = "/probes"
 )
@@ -29,7 +30,8 @@ func NewWebServer(service services.Service) *WebServer {
 }
 
 func (s *WebServer) ConfigureRoutes(r *gin.Engine) {
-	r.GET(getProbeLatestSamplePath, parseProbeIDMiddleware(), s.GetLatestSample)
+	r.GET(getSamplesOfCategoryPath, parseCategoryMiddleware(), s.GetSamplesOfCategory)
+	r.GET(getProbeLatestSamplePath, parseProbeIDMiddleware(), parseCategoryMiddleware(), s.GetLatestSample)
 	r.GET(listProbesPath, s.ListProbes)
 }
 

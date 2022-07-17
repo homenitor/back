@@ -1,10 +1,21 @@
 package entities
 
-import "github.com/homenitor/back/core/app/common"
+import (
+	"time"
+
+	"github.com/homenitor/back/core/app/common"
+	"github.com/homenitor/back/core/values"
+)
 
 type ProbeListingView struct {
 	ID   string
 	Name string
+}
+
+type GetSamplesView struct {
+	MeasuredAt time.Time
+	Values     map[string]float64
+	Average    float64
 }
 
 type Probe struct {
@@ -41,6 +52,17 @@ func (p *Probe) Name() string {
 
 func (p *Probe) RecordHumidity(s *Sample) {
 	p.humidities = append(p.humidities, s)
+}
+
+func (p *Probe) SamplesByCategory(category values.SampleCategory) []*Sample {
+	switch category {
+	case values.HUMIDITY_SAMPLE_CATEGORY:
+		return p.humidities
+	case values.TEMPERATURE_SAMPLE_CATEGORY:
+		return p.temperatures
+	}
+
+	return nil
 }
 
 func (p *Probe) LatestHumidity() (*Sample, error) {
