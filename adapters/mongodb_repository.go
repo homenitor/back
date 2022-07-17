@@ -66,6 +66,7 @@ type MongoGetSample struct {
 type MongoGetSamples struct {
 	MeasuredAt time.Time        `bson:"_id"`
 	Samples    []MongoGetSample `bson:"samples"`
+	Average    float64          `bson:"average"`
 }
 
 func (r *MongoDBRepository) GetSamples(category values.SampleCategory, query libraries.GetSamplesQuery) ([]*entities.GetSamplesView, error) {
@@ -76,8 +77,8 @@ func (r *MongoDBRepository) GetSamples(category values.SampleCategory, query lib
 					{"category", category},
 					{"measured_at",
 						bson.D{
-							{"$gt", query.From},
-							{"$lt", query.To},
+							{"$gte", query.From},
+							{"$lte", query.To},
 						},
 					},
 				},
@@ -97,9 +98,11 @@ func (r *MongoDBRepository) GetSamples(category values.SampleCategory, query lib
 							},
 						},
 					},
+					{"average", bson.D{{"$avg", "$value"}}},
 				},
 			},
 		},
+		bson.D{{"$sort", bson.D{{"_id", 1}}}},
 	}
 
 	cursor, err := r.samples().Aggregate(context.TODO(), pipeline)
@@ -123,6 +126,7 @@ func (r *MongoDBRepository) GetSamples(category values.SampleCategory, query lib
 		results = append(results, &entities.GetSamplesView{
 			MeasuredAt: doc.MeasuredAt,
 			Values:     values,
+			Average:    doc.Average,
 		})
 	}
 

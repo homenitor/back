@@ -26,14 +26,14 @@ func (m *ServiceMock) GetLatestSample(probeID string, category values.SampleCate
 	return args.Get(0).(*entities.Sample), nil
 }
 
-func (m *ServiceMock) GetSamplesByProbeForCategory(category values.SampleCategory, sample_range string) (map[string][]*entities.Sample, error) {
+func (m *ServiceMock) GetSamplesByCategory(category values.SampleCategory, sample_range string) ([]*entities.GetSamplesView, error) {
 	args := m.Called(category, sample_range)
 	err := args.Error(1)
 	if err != nil {
 		return nil, err
 	}
 
-	return args.Get(0).(map[string][]*entities.Sample), nil
+	return args.Get(0).([]*entities.GetSamplesView), nil
 }
 
 func (m *ServiceMock) SaveSample(probeID string, category values.SampleCategory, date time.Time, value float64) error {

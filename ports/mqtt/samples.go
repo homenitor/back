@@ -35,5 +35,5 @@ func (s *MQTTServer) SampleHandler(client mqtt.Client, msg mqtt.Message) {
 	}
 
 	s.logging.Infof("sample received: type=\"%s\", probe=\"%s\", value=\"%f\"", string(category), probeID, sampleValue)
-	s.service.SaveSample(probeID, category, time.Now().Round(time.Second), sampleValue)
+	s.service.SaveSample(probeID, category, time.Now().Round(time.Minute), sampleValue)
 }

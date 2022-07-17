@@ -27,9 +27,9 @@ func (s *WebServer) ListProbes(c *gin.Context) {
 }
 
 func (s *WebServer) GetSamplesOfCategory(c *gin.Context) {
-	sample_range := c.Param("range")
+	sample_range := c.Query("range")
 	if sample_range == "" {
-		sample_range = "1h"
+		sample_range = "10m"
 	}
 
 	category := c.GetString("category")
@@ -43,6 +43,7 @@ func (s *WebServer) GetSamplesOfCategory(c *gin.Context) {
 	for _, sample := range samples {
 		value := sample.Values
 		value["measured_at"] = float64(sample.MeasuredAt.Unix())
+		value["average"] = sample.Average
 		values = append(values, value)
 	}
 

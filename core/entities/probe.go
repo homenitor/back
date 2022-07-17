@@ -15,6 +15,7 @@ type ProbeListingView struct {
 type GetSamplesView struct {
 	MeasuredAt time.Time
 	Values     map[string]float64
+	Average    float64
 }
 
 type Probe struct {
